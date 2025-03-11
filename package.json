@@ -1,0 +1,32 @@
+{
+  "name": "loginsystem",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "app.ts",
+  "scripts": {
+    "test": "jest ",
+    "dev": "tsx watch ./src/app.ts"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/jest": "^29.5.14",
+    "@types/supertest": "^6.0.2",
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.3",
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "@sequelize/mariadb": "^7.0.0-alpha.45",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-validator": "^7.2.1",
+    "mongoose": "^8.12.1",
+    "sequelize": "^6.37.5"
+  }
+}
