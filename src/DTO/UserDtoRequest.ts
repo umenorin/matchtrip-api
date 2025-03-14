@@ -1,15 +1,20 @@
+/*
+    This class was create for ever request send by front end, it'll trasnform in UserDtoRquest for finally used by the services
+*/ 
+
+
 class UserDtoRequest {
     id?:string;
-    name:string;
-    email:string;
+    name?:string;
+    email?:string;
     password:string;
     numberPhone?:string;
-    uniqueIdentification:string;
-    age:number;
+    uniqueIdentification?:string;
+    age?:number;
 
     constructor(
         { id, email, name ,password,uniqueIdentification,age,numberPhone}: 
-        { id?: string | undefined; email: string; name: string;password:string;numberPhone?:string,uniqueIdentification:string;age:number },
+        { id?: string | undefined; email: string; name?: string;password:string;numberPhone?:string,uniqueIdentification:string;age:number },
     ){
         this.id=id;
         this.email=email;

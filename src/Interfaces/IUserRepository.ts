@@ -1,9 +1,9 @@
 import UserDto from "../DTO/UserDtoRequest.js";
-
+import UserDtoResponse from "../DTO/UserDtoResponse.js";
 
 interface IUserRepository{
     //This method will return a user by your Id 
-    getById(id:string): UserDto|null;
+    getById(id:string): Promise<UserDtoResponse | null>;
     //This method will return a user by your Email                                    
     getByEmail(email:string): UserDto
     //This method will return a user by your Unique Identificator                                    

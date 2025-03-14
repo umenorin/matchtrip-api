@@ -1,31 +1,25 @@
 import { Request, Response } from "express";
 import IUserService from "../Interfaces/IUserService.js";
-import UserDto from "../DTO/UserDtoRequest.js";
-
-const verifyUsedUserData = async (email:boolean, uniqueIdentificator:boolean) =>{
-  let message:string="";
-
-  if(email) {
-    message += "Email already used ";
-  }
-
-  if(uniqueIdentificator) {
-    message += "Unique Indetificator already used ";
-  }
-
-  return message;
-}
-
+import UserDtoRequest from "../DTO/UserDtoRequest.js";
+import { container, inject, injectable } from "tsyringe";
+import UserRepository from "../repositories/UserRepository.js";
+import UserService from "../services/UserService.js";
+@injectable()
 export default class UserController {
-
-  public constructor(private readonly _userService: IUserService) {}
+  private readonly _userService:IUserService;
+  public constructor(
+    @inject("IUserService") 
+    userService: IUserService
+  ) {
+    this._userService = userService
+  }
   
 
   public async postUser(req: Request, res: Response) {
-    const { user } = req.body;
     try {
+      const { user } = req.body;
 
-      const userDto = new UserDto(user)
+      const userDto = new UserDtoRequest(user)
 
       await this._userService.createUser(userDto);
       res.status(200).json({
@@ -37,8 +31,29 @@ export default class UserController {
       console.error(err);
       res.status(400).json({
         message: "A error has occurred",
-        error: err,
+        error: err.message,
       });
     }
+  }
+
+  public async getUser(req:Request,res:Response){
+    try{
+      const {user} = req.body;
+      
+
+    }catch(err:any){
+      res.status(err.statusHttp).json({
+        message: "A error has occurred",
+        error: err.message,
+      });
+    }
+  }
+
+  public async updateUser(req:Request,res:Response){
+
+  }
+
+  public async deleteUser(req:Request,res:Response){
+
   }
 }

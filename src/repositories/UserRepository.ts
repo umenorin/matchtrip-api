@@ -1,7 +1,12 @@
 import IUserRepository from "../Interfaces/IUserRepository.js";
 import { User } from "../models/User.js";
 import UserDto from "../DTO/UserDtoRequest.js";
+import bcrypt from "bcryptjs";
+import UserDtoRequest from "../DTO/UserDtoRequest.js";
+import UserDtoResponse from "../DTO/UserDtoResponse.js";
+import { injectable } from "tsyringe";
 
+@injectable()
 class UserRepository implements IUserRepository{
     async findUserExist(email: string, uniqueIdentification: string): Promise<boolean> {
         const userEmail = await User.findOne({email:email})
@@ -14,21 +19,36 @@ class UserRepository implements IUserRepository{
 
     }
 
-    async register(user: UserDto): Promise<void> {
+    async register(user: UserDtoRequest): Promise<void> {
+        const hash = process.env.HASH_SALT_BCRYPT ? Number(process.env.HASH_SALT_BCRYPT) : 10; 
+        const hashPassword = await bcrypt.hash(user.password,hash)
+        console.log("hashPassword: ",hashPassword)
         await User.create({
             name: user.name,
-            password: user.password,
+            password: hashPassword,
             email: user.email,
             numberPhone: user.numberPhone,
             age: user.age,
             uniqueIdentification: user.uniqueIdentification,
         });
-        const newUser = User.findOne({email:user.email}).exec()
-        console.log(newUser)
     }
 
-    getById(id: string): UserDto | null{
-        throw new Error("Method not implemented.");
+    async getById(id: string): Promise<UserDtoResponse | null> {
+        const user = await User.findOne({ _id: id }).exec();
+    
+        if (user) {
+            const userDtoResponse: UserDtoResponse = {
+                id:id,
+                email: user.email,
+                name: user.name,
+                numberPhone: user.numberPhone,
+                age: user.age,
+                uniqueIdentification: user.uniqueIdentification,
+            };
+            return userDtoResponse;
+        }
+    
+        return null;
     }
 
     getByEmail(email: string): UserDto {
