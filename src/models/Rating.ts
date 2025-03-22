@@ -3,12 +3,15 @@ import mongoose from "mongoose";
 import { Schema } from "mongoose";
 import { User } from "./User.js";
 
-const RatingSchema:Schema = new Schema({
+export const RatingSchema:Schema = new Schema({
     score:{
         type:Number,
         default:0
     },
-    travelerWhoRating: [User],
+    travelerWhoRating: [{
+        type:String,
+        maxlength: 255
+    }],
     
 });
 
