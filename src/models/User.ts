@@ -35,18 +35,14 @@ const UserSchema:Schema = new Schema({
         required: true,
         maxlength: 255
     },
-    nationality: {
-        type: String,
-        required: true,
-        maxlength: 255
+    rating: {
+	type: Schema.Types.ObjectId,
+	ref: "Rating",
     },
-    gender: {
-        type: String,
-        require: true,
-        maxlength: 255
-    },
-    rating: Rating,
-    Travels:[TravelGroup]
+    Travels:[{
+	type: Schema.Types.ObjectId,
+	ref: "TravelGroup"
+    }]
 });
 
 export const User = mongoose.model('User', UserSchema);

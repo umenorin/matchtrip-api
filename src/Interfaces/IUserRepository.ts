@@ -5,7 +5,7 @@ interface IUserRepository{
     //This method will return a user by your Id 
     getById(id:string): Promise<UserDtoResponse | null>;
     //This method will return a user by your Email                                    
-    getByEmail(email:string): UserDto
+    getByEmail(email:string): Promise<UserDtoResponse | null>;
     //This method will return a user by your Unique Identificator                                    
     getByUniqueIdentificator(uniqueIdentificator:string): UserDto
     //this method will create a new user and set in database and when the create has sucessfuly this method return the user ID

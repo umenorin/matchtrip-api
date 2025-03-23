@@ -22,14 +22,21 @@ const TravelGroupSchema:Schema = new Schema({
         type: Date,
     },
     owner: {
-        type: User,
-        required: true
+        type: Schema.Types.ObjectId,
+	ref: "User",
+        required: true,
     },
     limitTravelers: {
         type: Number,
     },
-    travelers: [User],
-    Categories: [Categorie]
+    travelers: [{
+	type: Schema.Types.ObjectId,
+	ref: "User",
+    }],
+    Categories: [{
+	type: Schema.Types.ObjectId,
+	ref: "Categorie",
+    }]
 
 });
 

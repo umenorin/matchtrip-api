@@ -8,7 +8,10 @@ const RatingSchema:Schema = new Schema({
         type:Number,
         default:0
     },
-    travelerWhoRating: [User],
+    travelerWhoRating: [{
+	type: Schema.Types.ObjectId,
+	ref: "User",
+    }],
     
 });
 
