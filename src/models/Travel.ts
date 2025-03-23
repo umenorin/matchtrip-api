@@ -3,9 +3,9 @@ import mongoose from "mongoose";
 import { Schema } from "mongoose";
 import { User } from "./User.js";
 import { Categorie } from "./Categorie.js";
-import { Rating } from "./Rating.js";
+import { RatingSchema } from "./Rating.js";
 
-const TravelGroupSchema:Schema = new Schema({
+export const TravelSchema:Schema = new Schema({
     name: {
         type: String,
         required: true,
@@ -24,7 +24,7 @@ const TravelGroupSchema:Schema = new Schema({
     endDate: {
         type: Date,
     },
-    rating: Rating,
+    rating: RatingSchema
 });
 
-export const TravelGroup = mongoose.model('TravelGroup', TravelGroupSchema);
+export const Travel = mongoose.model('Travel', TravelSchema);

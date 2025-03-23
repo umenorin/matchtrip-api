@@ -22,22 +22,13 @@ const TravelGroupSchema:Schema = new Schema({
         type: Date,
     },
     owner: {
-        type: Schema.Types.ObjectId,
-	ref: "User",
+        type: String,
         required: true,
     },
     limitTravelers: {
         type: Number,
     },
-    travelers: [{
-	type: Schema.Types.ObjectId,
-	ref: "User",
-    }],
-    Categories: [{
-	type: Schema.Types.ObjectId,
-	ref: "Categorie",
-    }]
-
-});
+    travelers: [{type:String}],
+}); 
 
 export const TravelGroup = mongoose.model('TravelGroup', TravelGroupSchema);
