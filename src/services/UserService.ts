@@ -1,10 +1,13 @@
 import IUserService from "../Interfaces/IUserService.js";
 import { User } from "../models/User.js";
 import UserDtoRequest from "../DTO/UserDtoRequest.js";
+import UserDtoResponse from "../DTO/UserDtoResponse.js"
 import IUserRepository from "../Interfaces/IUserRepository.js";
 import { CustomError } from "../errors/CustomError.js";
 import { container, inject, injectable } from "tsyringe";
 import UserRepository from "../repositories/UserRepository.js";
+import bcrypt from 'bcryptjs';
+
 
 @injectable()
 class UserService implements IUserService {
@@ -30,9 +33,36 @@ class UserService implements IUserService {
     await this._userRepository.register(user);
   }
 
+  async login(user: UserDtoRequest): Promise<UserDtoResponse> {
+	const _user = await User.findOne({ email: user.email });
+	console.log(_user)
+
+	if (!_user) {
+	   throw new Error('Credenciais inválidas user');
+	}
+
+	const isPasswordValid = bcrypt.compareSync(
+		user.password, 
+		_user.password as string,
+	);		
+
+	if (!isPasswordValid) {
+	   throw new Error('Credenciais inválidas senha');
+	}
+
+	return new UserDtoResponse({
+		id: _user.id,
+		email: _user.email as string,
+		name: _user.name as string,
+		numberPhone: _user.numberPhone as string,
+		uniqueIdentification: _user.uniqueIdentification as string,
+		age: _user.age as number
+	});
+  }
+
     deleteUser(id: string): void {
         throw new Error("Method not implemented.");
-    }
+    }	
     editUser(user: UserDtoRequest): void {
         throw new Error("Method not implemented.");
     }

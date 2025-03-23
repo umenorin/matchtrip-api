@@ -30,6 +30,9 @@ class UserRepository implements IUserRepository{
             numberPhone: user.numberPhone,
             age: user.age,
             uniqueIdentification: user.uniqueIdentification,
+            nationality:user.nationality,
+            gender:user.gender
+
         });
     }
 
@@ -39,11 +42,15 @@ class UserRepository implements IUserRepository{
         if (user) {
             const userDtoResponse: UserDtoResponse = {
                 id:id,
-                email: user.email,
-                name: user.name,
-                numberPhone: user.numberPhone,
-                age: user.age,
-                uniqueIdentification: user.uniqueIdentification,
+                name:user.name as string,
+                email:user.email as string,
+                numberPhone:user.numberPhone as string,
+                uniqueIdentification:user.uniqueIdentification as string,
+                age:user.age as number,
+                nationality:user.nationality as string,
+                gender:user.gender as string,
+                rating:user.rating,
+                travels:user.travels 
             };
             return userDtoResponse;
         }
@@ -51,9 +58,10 @@ class UserRepository implements IUserRepository{
         return null;
     }
 
-    getByEmail(email: string): UserDto {
-        throw new Error("Method not implemented.");
+    async getByEmail(email: string): Promise<UserDtoResponse | null> {
+    	return User.findOne({ email });
     }
+
     getByUniqueIdentificator(uniqueIdentificator: string): UserDto {
         throw new Error("Method not implemented.");
     }

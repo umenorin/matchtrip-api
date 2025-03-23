@@ -13,5 +13,6 @@ const userController = new UserController(userService);
 
 
 userRouter.post("/singup", userValidator, userController.postUser.bind(userController));
+userRouter.post("/login", userController.loginUser.bind(userController));
 
 export default userRouter;

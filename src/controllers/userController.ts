@@ -36,18 +36,22 @@ export default class UserController {
     }
   }
 
-  public async getUser(req:Request,res:Response){
-    try{
-      const {user} = req.body;
-      
-
-    }catch(err:any){
-      res.status(err.statusHttp).json({
-        message: "A error has occurred",
-        error: err.message,
-      });
+  public async loginUser(req: Request, res: Response) {
+    try {
+        const {user} = req.body; // ✅ Correção da desestruturação
+        const userDto = new UserDtoRequest(user); // ✅ Nome correto da variável
+        const userResponse = await this._userService.login(userDto); // ✅ Adicione await
+        res.status(200).json({
+            message: "Success!",
+            response: userResponse // ✅ Dados do usuário
+        });
+    } catch (err: any) {
+        res.status(err.statusHttp || 500).json({ // ✅ Use statusHttp ou 500 como fallback
+            message: "An error has occurred",
+            error: err.message
+        });
     }
-  }
+}
 
   public async updateUser(req:Request,res:Response){
 

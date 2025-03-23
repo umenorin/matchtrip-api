@@ -7,6 +7,7 @@ interface IUserService {
   //For resolve the problem for remove the user
   deleteUser(id: string): void;
   editUser(user: UserDto): void;
+  login(user: UserDto): void;
   
 }
 
