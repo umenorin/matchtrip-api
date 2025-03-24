@@ -3,7 +3,7 @@ import "./container/index.js"
 
 import express, { Request, Response } from "express";
 import "dotenv/config";
-import router from "../src/routes/index.routes.js"
+import router from "./routes/index.routes.js"
 import mongoosedb from "./database/mongodbMongoose.js";
 
 
