@@ -5,7 +5,7 @@ import express, { Request, Response } from "express";
 import "dotenv/config";
 import router from "./routes/index.routes.js"
 import mongoosedb from "./database/mongodbMongoose.js";
-
+import cors from "cors";
 
 const app = express();
 
@@ -16,6 +16,14 @@ mongoosedb().then(() => {
   console.error('Falha ao conectar ao banco de dados:', error);
 });
 
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Apenas seu frontend
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
 
 app.use(express.json())
 

@@ -34,30 +34,30 @@ class UserService implements IUserService {
   }
 
   async login(user: UserDtoRequest): Promise<UserDtoResponse> {
-	const _user = await User.findOne({ email: user.email });
-	console.log(_user)
+    const _user = await User.findOne({ email: user.email });
+    console.log(_user)
 
-	if (!_user) {
-	   throw new Error('Credenciais inválidas user');
-	}
+    if (!_user) {
+      throw new Error('Credenciais inválidas user');
+    }
 
-	const isPasswordValid = bcrypt.compareSync(
-		user.password, 
-		_user.password as string,
-	);		
+    const isPasswordValid = bcrypt.compareSync(
+      user.password, 
+      _user.password as string,
+    );		
 
-	if (!isPasswordValid) {
-	   throw new Error('Credenciais inválidas senha');
-	}
+    if (!isPasswordValid) {
+      throw new Error('Credenciais inválidas senha');
+    }
 
-	return new UserDtoResponse({
-		id: _user.id,
-		email: _user.email as string,
-		name: _user.name as string,
-		numberPhone: _user.numberPhone as string,
-		uniqueIdentification: _user.uniqueIdentification as string,
-		age: _user.age as number
-	});
+    return new UserDtoResponse({
+      id: _user.id,
+      email: _user.email as string,
+      name: _user.name as string,
+      numberPhone: _user.numberPhone as string,
+      uniqueIdentification: _user.uniqueIdentification as string,
+      age: _user.age as number
+    });
   }
 
     deleteUser(id: string): void {

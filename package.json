@@ -11,6 +11,7 @@
     "dev": "tsx watch ./src/app.ts"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.14",
     "@types/supertest": "^6.0.2",
@@ -25,6 +26,7 @@
     "@sequelize/mariadb": "^7.0.0-alpha.45",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "express-validator": "^7.2.1",

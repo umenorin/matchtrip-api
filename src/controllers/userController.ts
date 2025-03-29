@@ -38,15 +38,15 @@ export default class UserController {
 
   public async loginUser(req: Request, res: Response) {
     try {
-        const {user} = req.body; // ✅ Correção da desestruturação
-        const userDto = new UserDtoRequest(user); // ✅ Nome correto da variável
-        const userResponse = await this._userService.login(userDto); // ✅ Adicione await
+        const {user} = req.body; 
+        const userDto = new UserDtoRequest(user);
+        const userResponse = await this._userService.login(userDto); 
         res.status(200).json({
             message: "Success!",
-            response: userResponse // ✅ Dados do usuário
+            token: userResponse 
         });
     } catch (err: any) {
-        res.status(err.statusHttp || 500).json({ // ✅ Use statusHttp ou 500 como fallback
+        res.status(err.statusHttp || 500).json({ 
             message: "An error has occurred",
             error: err.message
         });
