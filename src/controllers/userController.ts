@@ -2,31 +2,28 @@ import { Request, Response } from "express";
 import IUserService from "../Interfaces/IUserService.js";
 import UserDtoRequest from "../DTO/UserDtoRequest.js";
 import { container, inject, injectable } from "tsyringe";
-import UserRepository from "../repositories/UserRepository.js";
-import UserService from "../services/UserService.js";
+
 @injectable()
 export default class UserController {
-  private readonly _userService:IUserService;
+  private readonly _userService: IUserService;
   public constructor(
-    @inject("IUserService") 
+    @inject("IUserService")
     userService: IUserService
   ) {
-    this._userService = userService
+    this._userService = userService;
   }
-  
 
   public async postUser(req: Request, res: Response) {
     try {
       const { user } = req.body;
 
-      const userDto = new UserDtoRequest(user)
+      const userDto = new UserDtoRequest(user);
 
       await this._userService.createUser(userDto);
       res.status(200).json({
         message: "sucessful",
         body: user,
       });
-
     } catch (err: any) {
       console.error(err);
       res.status(400).json({
@@ -38,26 +35,22 @@ export default class UserController {
 
   public async loginUser(req: Request, res: Response) {
     try {
-        const {user} = req.body; 
-        const userDto = new UserDtoRequest(user);
-        const userResponse = await this._userService.login(userDto); 
-        res.status(200).json({
-            message: "Success!",
-            token: userResponse 
-        });
+      const { user } = req.body;
+      const userDto = new UserDtoRequest(user);
+      const userResponse = await this._userService.login(userDto);
+      res.status(200).json({
+        message: "Success!",
+        token: userResponse,
+      });
     } catch (err: any) {
-        res.status(err.statusHttp || 500).json({ 
-            message: "An error has occurred",
-            error: err.message
-        });
+      res.status(err.statusHttp || 500).json({
+        message: "An error has occurred",
+        error: err.message,
+      });
     }
-}
-
-  public async updateUser(req:Request,res:Response){
-
   }
 
-  public async deleteUser(req:Request,res:Response){
+  public async updateUser(req: Request, res: Response) {}
 
-  }
+  public async deleteUser(req: Request, res: Response) {}
 }

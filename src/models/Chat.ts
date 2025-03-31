@@ -5,10 +5,9 @@ import { User } from "./User.js";
 import { TravelGroup } from "./TravelGroup.js";
 import { Message } from "./Message.js";
 
-const ChatSchema:Schema = new Schema({
-    travel:TravelGroup,
-    messages: [Message],
-    
+const ChatSchema: Schema = new Schema({
+  travel: TravelGroup,
+  messages: [Message],
 });
 
-export const Chat = mongoose.model('Rating', ChatSchema);
+export const Chat = mongoose.model("Rating", ChatSchema);

@@ -80,7 +80,7 @@ export const userValidator = (
   if (!CPFTest(user.uniqueIdentification)) {
     invalidMessages.push("cpf invalid");
   }
-  
+
   user.numberPhone = user.numberPhone.replace(/\D/g, "");
   user.uniqueIdentification = user.uniqueIdentification.replace(/\D/g, "");
   //JSON

@@ -8,7 +8,6 @@ interface IUserService {
   deleteUser(id: string): void;
   editUser(user: UserDto): void;
   login(user: UserDto): void;
-  
 }
 
 export default IUserService;
