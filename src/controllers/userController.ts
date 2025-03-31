@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import IUserService from "../Interfaces/IUserService.js";
 import UserDtoRequest from "../DTO/UserDtoRequest.js";
-import { container, inject, injectable } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 
 @injectable()
 export default class UserController {

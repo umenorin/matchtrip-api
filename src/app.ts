@@ -11,12 +11,6 @@ const app = express();
 
 // Initializing the database
 mongoosedb()
-  .then(() => {
-    console.log("Banco de dados conectado com sucesso!");
-  })
-  .catch((error) => {
-    console.error("Falha ao conectar ao banco de dados:", error);
-  });
 
 app.use(
   cors({

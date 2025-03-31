@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
 import { Schema } from "mongoose";
-import { User } from "./User.js";
 import { TravelGroup } from "./TravelGroup.js";
 import { Message } from "./Message.js";
 

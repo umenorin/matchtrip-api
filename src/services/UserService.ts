@@ -4,8 +4,7 @@ import UserDtoRequest from "../DTO/UserDtoRequest.js";
 import UserDtoResponse from "../DTO/UserDtoResponse.js";
 import IUserRepository from "../Interfaces/IUserRepository.js";
 import { CustomError } from "../errors/CustomError.js";
-import { container, inject, injectable } from "tsyringe";
-import UserRepository from "../repositories/UserRepository.js";
+import { inject, injectable } from "tsyringe";
 import bcrypt from "bcryptjs";
 
 @injectable()

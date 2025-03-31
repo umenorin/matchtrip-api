@@ -1,8 +1,6 @@
 import mongoose from "mongoose";
 
 import { Schema } from "mongoose";
-import { User } from "./User.js";
-import { Categorie } from "./Categorie.js";
 import { RatingSchema } from "./Rating.js";
 
 export const TravelSchema: Schema = new Schema({

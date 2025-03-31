@@ -1,4 +1,3 @@
-import { Response, Request } from "express";
 import { Router } from "express";
 import UserController from "../controllers/userController.js";
 import { userValidator } from "../middleware/userValidator.js";

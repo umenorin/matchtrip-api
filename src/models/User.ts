@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
 import { Schema } from "mongoose";
-import { TravelGroup } from "./TravelGroup.js";
 import { RatingSchema } from "./Rating.js";
 import { TravelSchema } from "./Travel.js";
 

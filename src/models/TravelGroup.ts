@@ -1,8 +1,6 @@
 import mongoose from "mongoose";
 
 import { Schema } from "mongoose";
-import { User } from "./User.js";
-import { Categorie } from "./Categorie.js";
 
 const TravelGroupSchema: Schema = new Schema({
   title: {

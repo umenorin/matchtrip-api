@@ -1,4 +1,3 @@
-import { User } from "../models/User.js";
 import UserDto from "../DTO/UserDtoRequest.js";
 
 interface IUserService {
