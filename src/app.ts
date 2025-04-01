@@ -1,20 +1,20 @@
 import "reflect-metadata";
-import "./container/index.js";
+import "./DI-container.js";
 
 import express, { Request, Response } from "express";
 import "dotenv/config";
-import router from "./routes/index.routes.js";
-import mongoosedb from "./database/mongodbMongoose.js";
+import router from "./routes/IndexRouter.js";
+import mongoosedb from "./database/MongoDbMongoose.js";
 import cors from "cors";
 
 const app = express();
 
 // Initializing the database
-mongoosedb()
+mongoosedb();
 
 app.use(
   cors({
-    origin: "http://localhost:5173", // Apenas seu frontend
+    origin: process.env.CLIENT_URL,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
