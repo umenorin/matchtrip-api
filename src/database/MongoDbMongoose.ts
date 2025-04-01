@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const mongoosedb = async () => {
   try {
     await mongoose.connect(
-      `mongodb://127.0.0.1:27017/${process.env.NAME_DATABASE}`
+      `${process.env.DATABASE_URL}`
     );
 
     console.log("Database working successfully");
