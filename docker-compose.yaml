@@ -1,0 +1,33 @@
+services:
+  api:
+    build: .
+    image: matchtrip-api
+    container_name: matchtrip_api
+    restart: unless-stopped
+    ports:
+      - "3000:3000"  # API exposta na porta 3000
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=mongodb://mongo_db:27017/matchtrip  # Conexão pro MongoDB
+      # - CLIENT_URL=CLIENT_URL # CORS client
+    depends_on:
+      - mongo_db
+    networks:
+      - matchtrip_net
+
+  mongo_db:
+    image: mongo:6.0  # Versão mais estável
+    container_name: matchtrip_mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"  # Porta padrão do MongoDB (opcional, só precisa se for acessar externamente)
+    volumes:
+      - mongodb_data:/data/db  # Persistência de dados
+    networks:
+      - matchtrip_net
+
+volumes:
+  mongodb_data:  # Volume persistente pro MongoDB
+
+networks:
+  matchtrip_net:  # Rede isolada pra comunicação entre os containers
