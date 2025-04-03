@@ -16,7 +16,7 @@ services:
       - matchtrip_net
 
   mongo_db:
-    image: mongo:6.0  # Versão mais estável
+    image: mongo:latest  # Versão mais estável
     container_name: matchtrip_mongo
     restart: unless-stopped
     ports:

@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Router } from "express";
 import userRouter from "./UsersRouter.js";
+import travelRouter from "./TravelRouter.js";
 
 const router = Router();
 
@@ -19,5 +20,6 @@ router.get("/", (req: Request, res: Response) => {
 });
 
 router.use("/users", userRouter);
+router.use("/travel", travelRouter);
 
 export default router;

@@ -8,6 +8,6 @@ const travelRepository = new TravelRepository();
 const travelService = new TravelService(travelRepository);
 const travelController = new TravelController(travelService);
 
-travelRouter.post("/create-travel", travelController.postTravel.bind);
+travelRouter.post("/create", travelController.postTravel.bind(travelController));
 
 export default travelRouter;

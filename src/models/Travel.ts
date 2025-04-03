@@ -9,10 +9,18 @@ export const TravelSchema: Schema = new Schema({
     required: true,
     maxlength: 255,
   },
-  city: {
+  latitude: {
     type: String,
     required: true,
     maxlength: 255,
+  },
+  Longitude: {
+    type: Number,
+    required: false,
+  },
+  city: {
+    type: Number,
+    required: false,
   },
   country: {
     type: String,

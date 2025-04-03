@@ -1,19 +1,23 @@
 import { inject, injectable } from "tsyringe";
 import ITravelService from "../Interfaces/ITravelService.js";
-
+import { Request, Response } from "express";
 
 @injectable()
 export default class TravelController {
-    private readonly _travelService: ITravelService;
+  private readonly _travelService: ITravelService;
 
-    public constructor(
+  public constructor(
     @inject("TravelService")
     travelService: ITravelService
-    ) {
+  ) {
     this._travelService = travelService;
-    }
+  }
 
-    public async postTravel(req: Request, res: Response) {
-        throw new Error("Method not implemented.");
-    }
+  public async postTravel(req: Request, res: Response) {
+    const { travel } = req.body;
+    
+    res.json({
+      message: travel,
+    });
+  }
 }
