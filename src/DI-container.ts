@@ -4,7 +4,7 @@ import IUserService from "./Interfaces/IUserService.js";
 import UserService from "./services/UserService.js";
 import { TravelRepository } from "./repositories/TravelRepository.js";
 import ITravelSevice from "./Interfaces/ITravelService.js";
-import { TravelService } from "./services/TravelServie.js";
+import { TravelService } from "./services/TravelService.js";
 
 // Repositories
 container.register("IUserRepository", {
