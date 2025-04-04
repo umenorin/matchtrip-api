@@ -1,7 +1,7 @@
 import TravelDtoRequest from "../DTO/TravelDtoRequest.js"
 
 interface ITravelSevice {
-  createTravel(): void;
+  createTravel(travelDto: TravelDtoRequest): void;
   deleteTravel(travelId: string): void;
   editTravel(travel: TravelDtoRequest): void;
   getTravel(travel: TravelDtoRequest): void;

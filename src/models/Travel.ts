@@ -27,9 +27,6 @@ export const TravelSchema: Schema = new Schema({
     required: true,
     maxlength: 255,
   },
-  endDate: {
-    type: Date,
-  },
   rating: RatingSchema,
 });
 

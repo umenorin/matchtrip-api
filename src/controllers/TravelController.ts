@@ -1,6 +1,7 @@
 import { inject, injectable } from "tsyringe";
 import ITravelService from "../Interfaces/ITravelService.js";
 import { Request, Response } from "express";
+import TravelDtoRequest from "../DTO/TravelDtoRequest.js";
 
 @injectable()
 export default class TravelController {
@@ -15,9 +16,23 @@ export default class TravelController {
 
   public async postTravel(req: Request, res: Response) {
     const { travel } = req.body;
-    
-    res.json({
-      message: travel,
+    const travelDto = new TravelDtoRequest({
+      name: travel.name,
+      latitude: travel.latitude,
+      longitude: travel.longitude,
+      city: travel.city,
+      country: travel.country,
     });
+    console.log("travelDto ",travelDto)
+    try {
+      const createdTravel = await this._travelService.createTravel(travelDto);
+      console.log(createdTravel)
+      return res.status(201).json({
+        travel: createdTravel
+      });
+    } catch (error) {
+      console.error("Travel creation failed:", error);
+      return res.status(400).json({ error: "Travel creation failed" });
+    }
   }
 }
