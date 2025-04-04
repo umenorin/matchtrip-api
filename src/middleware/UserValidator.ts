@@ -29,7 +29,7 @@ export const userValidator = (
   next: NextFunction
 ) => {
   const { user } = req.body;
-
+  console.log("userValidator: ", req.body);
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const phoneRegex = /^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/;
   const nameRegex = /^[a-zA-ZÀ-ÿ]+(?:\s+[a-zA-ZÀ-ÿ]+)*$/;

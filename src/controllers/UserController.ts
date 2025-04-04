@@ -16,7 +16,7 @@ export default class UserController {
   public async postUser(req: Request, res: Response) {
     try {
       const { user } = req.body;
-
+      console.log("user: ",user)
       const userDto = new UserDtoRequest(user);
 
       await this._userService.createUser(userDto);

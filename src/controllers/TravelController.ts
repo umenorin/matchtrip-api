@@ -8,7 +8,7 @@ export default class TravelController {
   private readonly _travelService: ITravelService;
 
   public constructor(
-    @inject("TravelService")
+    @inject("ITravelService")
     travelService: ITravelService
   ) {
     this._travelService = travelService;

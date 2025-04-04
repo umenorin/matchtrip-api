@@ -3,20 +3,26 @@ import UserRepository from "./repositories/UserRepository.js";
 import IUserService from "./Interfaces/IUserService.js";
 import UserService from "./services/UserService.js";
 import { TravelRepository } from "./repositories/TravelRepository.js";
-import ITravelSevice from "./Interfaces/ITravelService.js";
+import ITravelService from "./Interfaces/ITravelService.js";
 import { TravelService } from "./services/TravelService.js";
 
-// Repositories
+
+// Registro de Repositórios
 container.register("IUserRepository", {
-  useClass: UserRepository,
+  useClass: UserRepository
 });
 
 container.register("ITravelRepository", {
-  useClass: TravelRepository,
+  useClass: TravelRepository
 });
 
-// Services
-container.register<IUserService>("UserService", UserService);
+// Registro de Services
+container.register<IUserService>("IUserService", {
+  useClass: UserService
+});
 
-container.register<ITravelSevice>("TravelService", TravelService);
-export default container;
+container.register<ITravelService>("ITravelService", {
+  useClass: TravelService
+});
+
+export { container };

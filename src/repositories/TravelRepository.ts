@@ -1,8 +1,11 @@
+import { injectable } from "tsyringe";
 import TravelDtoRequest from "../DTO/TravelDtoRequest.js";
 import ITravelRepository from "../Interfaces/ITravelRepository.js";
+import { Rating } from "../models/Rating.js";
 import { Travel } from "../models/Travel.js";
 
-export class TravelRepository implements ITravelRepository {
+@injectable()
+export class TravelRepository implements ITravelRepository {           
   async register(travelDto: TravelDtoRequest): Promise<void> {
     try {
       const teste = await Travel.create({
@@ -11,7 +14,9 @@ export class TravelRepository implements ITravelRepository {
         longitude: travelDto.longitude,
         city: travelDto.city,
         country: travelDto.country,
+        Rating: new Rating({})
       });
+      console.log(teste)
       
     } catch (error) {
       console.error("Error creating travel:", error);

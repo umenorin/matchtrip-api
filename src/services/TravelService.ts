@@ -1,8 +1,10 @@
-import { inject } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 import TravelDtoRequest from "../DTO/TravelDtoRequest.js";
 import ITravelRepository from "../Interfaces/ITravelRepository.js";
 import ITravelSevice from "../Interfaces/ITravelService.js";
 
+
+@injectable()
 export class TravelService implements ITravelSevice {
   private readonly _travelRepository: ITravelRepository;
 
