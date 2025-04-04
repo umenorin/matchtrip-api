@@ -25,10 +25,9 @@ export default class TravelController {
     });
     console.log("travelDto ",travelDto)
     try {
-      const createdTravel = await this._travelService.createTravel(travelDto);
-      console.log(createdTravel)
+      await this._travelService.createTravel(travelDto);
       return res.status(201).json({
-        travel: createdTravel
+        travel: travelDto
       });
     } catch (error) {
       console.error("Travel creation failed:", error);
