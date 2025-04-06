@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import IUserService from "../Interfaces/IUserService.js";
 import UserDtoRequest from "../DTO/UserDtoRequest.js";
 import { inject, injectable } from "tsyringe";
+import { CustomError } from "../errors/CustomError.js";
 
 @injectable()
 export default class UserController {
@@ -16,7 +17,7 @@ export default class UserController {
   public async postUser(req: Request, res: Response) {
     try {
       const { user } = req.body;
-      console.log("user: ",user)
+      console.log("user: ", user);
       const userDto = new UserDtoRequest(user);
 
       await this._userService.createUser(userDto);
@@ -24,12 +25,14 @@ export default class UserController {
         message: "sucessful",
         body: user,
       });
-    } catch (err: any) {
-      console.error(err);
-      res.status(400).json({
-        message: "A error has occurred",
-        error: err.message,
-      });
+    } catch (error: any) {
+      if (error instanceof CustomError) {
+        console.error("Travel edit failed:", error.message);
+        res
+          .status(error.statusHttp)
+          .json({ message: error.message, error: error.message });
+        return;
+      }
     }
   }
 
@@ -42,11 +45,14 @@ export default class UserController {
         message: "Success!",
         token: userResponse,
       });
-    } catch (err: any) {
-      res.status(err.statusHttp || 500).json({
-        message: "An error has occurred",
-        error: err.message,
-      });
+    } catch (error: any) {
+      if (error instanceof CustomError) {
+        console.error("Travel edit failed:", error.message);
+        res
+          .status(error.statusHttp)
+          .json({ message: error.message, error: error.message });
+        return;
+      }
     }
   }
 

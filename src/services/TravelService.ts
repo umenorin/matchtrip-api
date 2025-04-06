@@ -21,7 +21,7 @@ export class TravelService implements ITravelSevice {
   }
 
   async editTravel(travel: TravelDtoRequest): Promise<void> {
-    await this._travelRepository.editTravel(travel)
+    await this._travelRepository.editTravel(travel);
   }
 
   getTravel(travel: TravelDtoRequest): void {

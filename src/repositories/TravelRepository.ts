@@ -4,6 +4,7 @@ import ITravelRepository from "../Interfaces/ITravelRepository.js";
 import { Rating } from "../models/Rating.js";
 import { Travel } from "../models/Travel.js";
 import { CustomError } from "../errors/CustomError.js";
+import instance from "tsyringe/dist/typings/dependency-container.js";
 
 @injectable()
 export class TravelRepository implements ITravelRepository {
@@ -26,22 +27,25 @@ export class TravelRepository implements ITravelRepository {
   deleteTravel(travelId: string): void {
     throw new Error("Method not implemented.");
   }
+
   async editTravel(travel: TravelDtoRequest): Promise<void> {
-    const travelDataBase = await Travel.findOneAndUpdate(
-      { _id: travel.id },
-      {
-        name: travel.name,
-        latitude: travel.latitude,
-        longitude: travel.longitude,
-        city: travel.city,
-        country: travel.country,
-      },
-      { new: true }
-    ).lean();
-    if (travelDataBase == null){
-      throw new CustomError("This travel doesn't exist",400)
+    try {
+      await Travel.findOneAndUpdate(
+        { _id: travel.id },
+        {
+          name: travel.name,
+          latitude: travel.latitude,
+          longitude: travel.longitude,
+          city: travel.city,
+          country: travel.country,
+        },
+        { new: true }
+      ).lean();
+    } catch (error: any) {
+      console.log(error);
+      if (error instanceof Error) throw new CustomError(error.message, 400);
+      throw error;
     }
-    console.log(travelDataBase)
   }
 
   getTravel(travelID: string): TravelDtoRequest {

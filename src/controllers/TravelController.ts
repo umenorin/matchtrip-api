@@ -2,6 +2,8 @@ import { inject, injectable } from "tsyringe";
 import ITravelService from "../Interfaces/ITravelService.js";
 import { Request, Response } from "express";
 import TravelDtoRequest from "../DTO/TravelDtoRequest.js";
+import { CustomError } from "../errors/CustomError.js";
+
 
 @injectable()
 export default class TravelController {
@@ -55,9 +57,12 @@ export default class TravelController {
       });
       return;
     } catch (error) {
-      console.error("Travel edit failed:", error);
-      res.status(400).json({ error: "Travel edit failed" });
-      return;
+      if(error instanceof CustomError){
+        console.error("Travel edit failed:", error.message);
+        res.status(error.statusHttp).json({ error: error.message });
+        return;
+      }
+      res.status(500).json(error);
     }
   }
 }
