@@ -23,15 +23,41 @@ export default class TravelController {
       city: travel.city,
       country: travel.country,
     });
-    console.log("travelDto ",travelDto)
+
     try {
       await this._travelService.createTravel(travelDto);
-      return res.status(201).json({
-        travel: travelDto
+      res.status(201).json({
+        travel: travelDto,
       });
+      return;
     } catch (error) {
       console.error("Travel creation failed:", error);
-      return res.status(400).json({ error: "Travel creation failed" });
+      res.status(400).json({ error: "Travel creation failed" });
+      return;
+    }
+  }
+
+  public async updateTravel(req: Request, res: Response) {
+    const { travel } = req.body;
+    const travelDto = new TravelDtoRequest({
+      id: travel.id,
+      name: travel.name,
+      latitude: travel.latitude,
+      longitude: travel.longitude,
+      city: travel.city,
+      country: travel.country,
+    });
+    
+    try {
+      await this._travelService.editTravel(travelDto);
+      res.status(201).json({
+        travel: travelDto,
+      });
+      return;
+    } catch (error) {
+      console.error("Travel edit failed:", error);
+      res.status(400).json({ error: "Travel edit failed" });
+      return;
     }
   }
 }

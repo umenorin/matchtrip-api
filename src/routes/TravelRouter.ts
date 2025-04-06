@@ -3,14 +3,15 @@ import TravelController from "../controllers/TravelController.js";
 import { container } from "tsyringe";
 
 const travelRouter = Router();
+const travelRouterInstance = container.resolve(TravelController);
 
-travelRouter.post("/create", async (req, res, next) => {
-  try {
-    const controller = container.resolve(TravelController);
-    await controller.postTravel(req, res);
-  } catch (error) {
-    next(error);
-  }
-});
+travelRouter.post(
+  "/create",
+  travelRouterInstance.postTravel.bind(travelRouterInstance)
+);
+travelRouter.put(
+  "/update",
+  travelRouterInstance.updateTravel.bind(travelRouterInstance)
+);
 
 export default travelRouter;

@@ -15,15 +15,19 @@ export class TravelService implements ITravelSevice {
   async createTravel(travelDto: TravelDtoRequest): Promise<void> {
     await this._travelRepository.register(travelDto)
   }
+
   deleteTravel(travelId: string): void {
     throw new Error("Method not implemented.");
   }
-  editTravel(travel: TravelDtoRequest): void {
-    throw new Error("Method not implemented.");
+
+  async editTravel(travel: TravelDtoRequest): Promise<void> {
+    await this._travelRepository.editTravel(travel)
   }
+
   getTravel(travel: TravelDtoRequest): void {
     throw new Error("Method not implemented.");
   }
+  
   getTravels(travelMaxQuantity: number): Array<TravelDtoRequest> {
     throw new Error("Method not implemented.");
   }

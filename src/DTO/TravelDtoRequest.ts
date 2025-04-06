@@ -4,7 +4,7 @@ class TravelDtoRequest {
   id?: string;
   name: string;
   latitude: string;
-  longitude?: number;
+  longitude: number;
   city?: number;
   country: string;
   rating?: any;
@@ -21,7 +21,7 @@ class TravelDtoRequest {
     id?: string;
     name: string;
     latitude: string;
-    longitude?: number;
+    longitude: number;
     city?: number;
     country: string;
     rating?: typeof Rating;

@@ -5,22 +5,10 @@ import { container } from "tsyringe";
 
 const userRouter = Router();
 
-userRouter.post("/singup", userValidator, async (req, res, next) => {
-  try {
-    const controller = container.resolve(UserController);
-    await controller.postUser(req, res);
-  } catch (error) {
-    next(error);
-  }
-});
+const userControllerInstance = container.resolve(UserController);
 
-userRouter.post("/login", async (req, res, next) => {
-  try {
-    const controller = container.resolve(UserController);
-    await controller.loginUser(req, res);
-  } catch (error) {
-    next(error);
-  }
-});
+userRouter.post("/singup", userValidator, userControllerInstance.postUser.bind(userControllerInstance));
+
+userRouter.post("/login", userControllerInstance.loginUser.bind(userControllerInstance));
 
 export default userRouter;

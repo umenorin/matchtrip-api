@@ -7,7 +7,7 @@ import ITravelService from "./Interfaces/ITravelService.js";
 import { TravelService } from "./services/TravelService.js";
 
 
-// Registro de Repositórios
+// Registro de Repositórios parabens mano
 container.register("IUserRepository", {
   useClass: UserRepository
 });
@@ -16,7 +16,7 @@ container.register("ITravelRepository", {
   useClass: TravelRepository
 });
 
-// Registro de Services
+// Registro de Services ta voando em
 container.register<IUserService>("IUserService", {
   useClass: UserService
 });

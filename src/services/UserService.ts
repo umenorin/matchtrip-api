@@ -17,15 +17,18 @@ class UserService implements IUserService {
 
   async createUser(user: UserDtoRequest): Promise<void> {
     let verifyUserExist = false;
+
     if (user.email && user.uniqueIdentification) {
       verifyUserExist = await this._userRepository.findUserExist(
         user.email,
         user.uniqueIdentification
       );
     }
+
     if (verifyUserExist) {
       throw new CustomError("Email or Unique Identification already used", 405);
     }
+
     await this._userRepository.register(user);
   }
 
@@ -61,6 +64,7 @@ class UserService implements IUserService {
   deleteUser(id: string): void {
     throw new Error("Method not implemented.");
   }
+  
   editUser(user: UserDtoRequest): void {
     throw new Error("Method not implemented.");
   }
