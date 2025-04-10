@@ -1,11 +1,11 @@
 import { Rating } from "../models/Rating.js";
 
-class TravelDtoRequest {
+class TravelDto {
   id?: string;
   name: string;
-  latitude: string;
+  latitude: number;
   longitude: number;
-  city?: number;
+  city?: string;
   country: string;
   rating?: any;
 
@@ -20,9 +20,9 @@ class TravelDtoRequest {
   }: {
     id?: string;
     name: string;
-    latitude: string;
+    latitude: number;
     longitude: number;
-    city?: number;
+    city?: string;
     country: string;
     rating?: typeof Rating;
   }) {
@@ -32,8 +32,8 @@ class TravelDtoRequest {
     this.longitude = longitude;
     this.city = city;
     this.country = country;
-    this.rating = rating ? new Rating() : undefined;
+    this.rating = rating ? rating : new Rating();
   }
 }
 
-export default TravelDtoRequest
+export default TravelDto

@@ -1,13 +1,12 @@
-import TravelDtoRequest from "../DTO/TravelDtoRequest.js"
+import TravelDto from "../DTO/TravelDto.js";
 
 interface ITravelSevice {
-  createTravel(travelDto: TravelDtoRequest): void;
+  createTravel(travelDto: TravelDto): void;
   deleteTravel(travelId: string): void;
-  editTravel(travel: TravelDtoRequest): void;
-  getTravel(travel: TravelDtoRequest): void;
+  editTravel(travel: TravelDto): void;
+  getTravel(travelId: string): Promise<TravelDto>;
   // This method have the objective get the  travels in the DB until to get the travelMaxQuantity valor
-  getTravels(travelMaxQuantity: number): Array<TravelDtoRequest>;
+  getTravels(travelMaxQuantity: number): Array<TravelDto>;
 }
 
-
-export default ITravelSevice
+export default ITravelSevice;
