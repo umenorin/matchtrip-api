@@ -9,9 +9,20 @@ travelRouter.post(
   "/create",
   travelRouterInstance.postTravel.bind(travelRouterInstance)
 );
+
 travelRouter.put(
   "/update",
   travelRouterInstance.updateTravel.bind(travelRouterInstance)
+);
+
+travelRouter.delete(
+  "/delete",
+  travelRouterInstance.deleteTravel.bind(travelRouterInstance)
+);
+
+travelRouter.get(
+  "/get",
+  travelRouterInstance.getTravel.bind(travelRouterInstance)
 );
 
 export default travelRouter;

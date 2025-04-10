@@ -45,8 +45,7 @@ export class TravelRepository implements ITravelRepository {
           longitude: travel.longitude,
           city: travel.city,
           country: travel.country,
-        },
-        { new: true }
+        }
       ).lean();
     } catch (error: any) {
       console.log(error);
@@ -58,8 +57,7 @@ export class TravelRepository implements ITravelRepository {
   async getTravel(travelID: string): Promise<TravelDto> {
     try {
       const travel = await Travel.findOne(
-        { _id: travelID },
-        { new: true }
+        { _id: travelID }
       ).lean();
 
       if (!travel){
