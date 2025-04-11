@@ -3,6 +3,7 @@ import ITravelService from "../Interfaces/ITravelService.js";
 import { Request, Response } from "express";
 import TravelDtoRequest from "../DTO/TravelDto.js";
 import { CustomError } from "../errors/CustomError.js";
+import TravelDto from "../DTO/TravelDto.js";
 
 @injectable()
 export default class TravelController {
@@ -86,12 +87,39 @@ export default class TravelController {
 
   public async getTravel(req: Request, res: Response) {
     const { travel } = req.body;
-
+    console.log("params ",req.params)
     try {
       const travelDto = await this._travelService.getTravel(travel.id);
       res.status(201).json({
         message: "Travel deleted with sucess",
-        travel: travelDto
+        travel: travelDto,
+      });
+      return;
+    } catch (error) {
+      if (error instanceof CustomError) {
+        console.error("Travel delete failed:", error.message);
+        res.status(error.statusHttp).json({ error: error.message });
+        return;
+      }
+      res.status(500).json(error);
+    }
+  }
+
+  public async getTravels(req: Request, res: Response) {
+    const maxTravelNumber = Number(req.body.maxTravel);
+    console.log(maxTravelNumber)
+    try {
+      const travels: TravelDto[] = await this._travelService.getTravels(
+        maxTravelNumber
+      );
+      if (travels.length == 0) {
+        res.status(500).json({
+          message: "No travels founded",
+        });
+      }
+      res.status(201).json({
+        message: "List Travels",
+        travels: travels,
       });
       return;
     } catch (error) {

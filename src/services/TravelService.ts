@@ -29,7 +29,7 @@ export class TravelService implements ITravelSevice {
     return await this._travelRepository.getTravel(travelId);
   }
 
-  getTravels(travelMaxQuantity: number): Array<TravelDto> {
-    throw new Error("Method not implemented.");
+  async getTravels(travelMaxQuantity: number): Promise<TravelDto[]> {
+   return await this._travelRepository.getTravels(travelMaxQuantity);
   }
 }
