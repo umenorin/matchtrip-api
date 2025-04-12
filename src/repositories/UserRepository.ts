@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs";
 import UserDtoRequest from "../DTO/UserDtoRequest.js";
 import UserDtoResponse from "../DTO/UserDtoResponse.js";
 import { injectable } from "tsyringe";
+import { Types } from "mongoose";
 
 @injectable()
 class UserRepository implements IUserRepository {
@@ -69,7 +70,47 @@ class UserRepository implements IUserRepository {
 
   getByUniqueIdentificator(uniqueIdentificator: string): UserDto {
     throw new Error("Method not implemented.");
+ }
+
+async update(id: string, userData: Partial<UserDtoRequest>): Promise<UserDtoResponse> {
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      { $set: userData },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedUser) {
+      throw new Error("User not found for update");
+    }
+
+    return {
+      id: updatedUser.id as string,
+      name: updatedUser.name as string,
+      email: updatedUser.email as string,
+      numberPhone: updatedUser.numberPhone as string,
+      uniqueIdentification: updatedUser.uniqueIdentification as string,
+      age: updatedUser.age as number,
+      nationality: updatedUser.nationality as string,
+      gender: updatedUser.gender as string,
+      rating: updatedUser.rating,
+      travels: updatedUser.travels
+    };
   }
+
+async delete(id: string): Promise<void> {
+  // Validação do ID
+  if (!Types.ObjectId.isValid(id)) {
+    throw new Error("ID de usuário inválido");
+  }
+
+  // Operação de deleção
+  const deletedUser = await User.findByIdAndDelete(id);
+
+  // Verificação corrigida
+  if (!deletedUser) {
+    throw new Error(`Usuário com ID ${id} não encontrado`);
+  }
+ }
 }
 
 export default UserRepository;

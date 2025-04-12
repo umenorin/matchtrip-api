@@ -56,7 +56,48 @@ export default class UserController {
     }
   }
 
-  public async updateUser(req: Request, res: Response) {}
+  public async updateUser(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const userData = req.body;
+      const updatedUser = await this._userService.editUser(id, userData);
 
-  public async deleteUser(req: Request, res: Response) {}
+      res.status(200).json({
+	message: "User updated successfully",
+	user: updatedUser
+      });
+    }
+    catch (error: any){
+      if (error instanceof CustomError) {
+	res.status(error.statusHttp).json({
+	  message: error.message,
+	  error: error.message
+	});
+      } else {
+	res.status(500).json({
+	  message: "Internal Server Error",
+	  error: error.message
+	});
+      }
+    }
+  }
+
+public async deleteUser(req: Request, res: Response) {
+  try {
+    const { id } = req.params;
+    await this._userService.deleteUser(id);
+    res.status(200).json({ 
+      success: true,
+      message: "Usuário excluído com sucesso" 
+    });
+  } catch (error: any) {
+    const status = error instanceof CustomError ? error.statusHttp : 500;
+    res.status(status).json({
+      success: false,
+      message: error.message,
+      invalidId: status === 400,
+      providedId: req.params.id
+    });
+  }
+}
 }

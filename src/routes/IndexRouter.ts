@@ -13,6 +13,8 @@ router.get("/", (req: Request, res: Response) => {
           getUsers: "/users",
           createUser: "/users/singup",
           loginUser: "/users/login",
+	  editUser: "/users/edit/:id",
+	  deleteUser: "/users/delete/:id",
         },
       },
     },

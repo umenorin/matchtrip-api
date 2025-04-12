@@ -61,13 +61,41 @@ class UserService implements IUserService {
     });
   }
 
-  deleteUser(id: string): void {
-    throw new Error("Method not implemented.");
-  }
+ deleteUser(id: string): void {
+  try {
+    this._userRepository.delete(id);
+  } catch (error) {
+    throw new CustomError("Internal Server Error", 500);
+  } 
+ }
   
-  editUser(user: UserDtoRequest): void {
-    throw new Error("Method not implemented.");
-  }
+ async editUser(id: string, userData: UserDtoRequest): Promise<UserDtoResponse> {
+    const existingUser = await this._userRepository.getById(id);
+    if (!existingUser) throw new CustomError("User not Found", 404);
+
+    if (userData.email && userData.email !== existingUser.email) {
+        const emailExists = await this._userRepository.getByEmail(userData.email);
+        if (emailExists) throw new CustomError("Email already exists", 400);
+    }
+
+    if (userData.password) {
+        userData.password = bcrypt.hashSync(userData.password, 10);
+    }
+
+    const updatedUser = await this._userRepository.update(id, userData);
+    if (!updatedUser) throw new CustomError("Internal Server Error", 500);
+
+    return new UserDtoResponse({
+        id: updatedUser.id,
+        email: updatedUser.email,
+        name: updatedUser.name,
+        numberPhone: updatedUser.numberPhone,
+        uniqueIdentification: updatedUser.uniqueIdentification,
+        age: updatedUser.age,
+        nationality: updatedUser.nationality,
+        gender: updatedUser.gender
+    });
+  } 
 }
 
 export default UserService;

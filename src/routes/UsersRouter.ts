@@ -11,4 +11,8 @@ userRouter.post("/singup", userValidator, userControllerInstance.postUser.bind(u
 
 userRouter.post("/login", userControllerInstance.loginUser.bind(userControllerInstance));
 
+userRouter.put("/edit/:id", userValidator, userControllerInstance.updateUser.bind(userControllerInstance));
+
+userRouter.delete("/delete/:id", userControllerInstance.deleteUser.bind(userControllerInstance));
+
 export default userRouter;
