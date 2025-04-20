@@ -4,7 +4,7 @@ class MessageDto {
     id?:string;
     content:string;
     owner?: any;
-    dateMessageSend: Date;
+    dateMessageSend?: Date;
 
     constructor({
         id,
@@ -15,8 +15,8 @@ class MessageDto {
       }: {
         id?: string;
         content: string;
-        dateMessageSend: Date;
-        owner: typeof User
+        dateMessageSend?: Date;
+        owner?: typeof User
       }) {
         this.id = id;
         this.content = content;

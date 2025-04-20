@@ -13,12 +13,14 @@ class MessageService implements IMessageService {
   ) {
     this._messageRepository = messageRepository;
   }
-  
+
   getById(id: string): Promise<MessageDto | null> {
     throw new Error("Method not implemented.");
   }
-  sendMessage(userId: string, messageDto: MessageDto): void {
-    throw new Error("Method not implemented.");
+  sendMessage(userId: string, messageDto: MessageDto): Promise<MessageDto> {
+    const newMessage = this._messageRepository.sendMessage(userId,messageDto)
+
+    return newMessage;
   }
   deleteMessage(userId: string, id: string): boolean {
     throw new Error("Method not implemented.");

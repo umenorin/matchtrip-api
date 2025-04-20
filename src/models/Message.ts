@@ -10,12 +10,15 @@ const MessageSchema: Schema = new Schema(
       require: true,
       maxLenght: 255,
     },
-    owner: [User],
+    owner: {
+      type: Schema.Types.ObjectId, 
+      ref: User,
+      required: true,
+    },
   },
-  { 
-  timestamps: true, // Adiciona `createdAt` e `updatedAt` automaticamente
+  {
+    timestamps: true, // Adiciona `createdAt` e `updatedAt` automaticamente
   }
-
 );
 
 export const Message = mongoose.model("Message", MessageSchema);

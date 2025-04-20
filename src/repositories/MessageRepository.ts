@@ -17,19 +17,24 @@ class MessageRepository implements IMessageRepository {
     // return message;
     throw new Error("Method not implemented.");
   }
-  sendMessage(userId: string, messageDto: MessageDto): void {
-    const user = User.findById(userId);
+  async sendMessage(
+    userId: string,
+    messageDto: MessageDto
+  ): Promise<MessageDto> {
+    const user = await User.findById(userId).select("-password -Travels");
     if (!user) {
       throw new CustomError("User not found", 400);
     }
 
-    const newMessage = Message.create({
+    const newMessage = await Message.create({
       content: messageDto.content,
       owner: user,
     });
     if (!newMessage) {
       throw new CustomError("Message don't send", 400);
     }
+    messageDto.owner = user;
+    return messageDto;
   }
   deleteMessage(userId: string, id: string): boolean {
     throw new Error("Method not implemented.");

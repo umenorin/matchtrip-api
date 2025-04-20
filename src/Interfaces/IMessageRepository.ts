@@ -5,7 +5,7 @@ interface IMessageRepository {
   getById(id: string): Promise<MessageDto | null>;
 
   // this method will create a message
-  sendMessage(userId: string, messageDto: MessageDto): void;
+  sendMessage(userId: string, messageDto: MessageDto): Promise<MessageDto>;
 
   deleteMessage(userId: string, id: string): boolean;
 

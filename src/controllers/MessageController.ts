@@ -1,0 +1,37 @@
+import { Request, Response } from "express";
+import { inject, injectable } from "tsyringe";
+import { CustomError } from "../errors/CustomError.js";
+import IMessageService from "../Interfaces/IMessageService.js";
+import MessageDto from "../DTO/MessageDto.js";
+import { Message } from "../models/Message.js";
+
+@injectable()
+export default class UserController {
+  private readonly _messageService: IMessageService;
+  public constructor(
+    @inject("IMessageService")
+    messageService: IMessageService
+  ) {
+    this._messageService = messageService;
+  }
+
+  public async postMessage(req: Request, res: Response) {
+    try{
+        const { user } = req.body;
+        const { message } = req.body;
+    
+        const messageDto = new MessageDto({ content: message.content as string });
+        const newMessage = await this._messageService.sendMessage(user.id,messageDto)
+        res.status(200).json({
+            message:"you send the message with success",
+            content: newMessage
+        })
+    } catch (error){
+        if (error instanceof CustomError) {
+          console.error("Message create failed:", error.message);
+          res.status(error.statusHttp).json({ error: error.message });
+          return;
+        }
+    }
+  }
+}
