@@ -5,7 +5,7 @@ interface ITravelRepository {
   deleteTravel(travelId: string): void;
   editTravel(travel: TravelDto): void;
   getTravel(travelID: string): Promise<TravelDto>;
-  getTravels(maxTravels: number): Promise<TravelDto[]>
+  getManyTravels(maxTravels: number): Promise<TravelDto[]>
 }
 
 export default ITravelRepository;

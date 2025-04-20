@@ -78,7 +78,7 @@ export class TravelRepository implements ITravelRepository {
     }
   }
 
-  async getTravels(maxTravels: number): Promise<TravelDto[]> {
+  async getManyTravels(maxTravels: number): Promise<TravelDto[]> {
     try {
       const allTravels = await Travel.find().lean().exec();
       console.log("travels",allTravels)

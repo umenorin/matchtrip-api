@@ -18,7 +18,7 @@ export class TravelService implements ITravelSevice {
   }
 
   async deleteTravel(travelId: string): Promise<void> {
-    await this._travelRepository.deleteTravel(travelId)
+    await this._travelRepository.deleteTravel(travelId);
   }
 
   async editTravel(travel: TravelDto): Promise<void> {
@@ -29,7 +29,7 @@ export class TravelService implements ITravelSevice {
     return await this._travelRepository.getTravel(travelId);
   }
 
-  async getTravels(travelMaxQuantity: number): Promise<TravelDto[]> {
-   return await this._travelRepository.getTravels(travelMaxQuantity);
+  async getManyTravels(travelMaxQuantity: number): Promise<TravelDto[]> {
+    return await this._travelRepository.getManyTravels(travelMaxQuantity);
   }
 }

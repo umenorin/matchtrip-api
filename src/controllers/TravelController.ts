@@ -105,11 +105,11 @@ export default class TravelController {
     }
   }
 
-  public async getTravels(req: Request, res: Response) {
+  public async getManyTravels(req: Request, res: Response) {
     const maxTravelNumber = Number(req.body.maxTravel);
     console.log(maxTravelNumber)
     try {
-      const travels: TravelDto[] = await this._travelService.getTravels(
+      const travels: TravelDto[] = await this._travelService.getManyTravels(
         maxTravelNumber
       );
       if (travels.length == 0) {

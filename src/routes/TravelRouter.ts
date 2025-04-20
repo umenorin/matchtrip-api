@@ -27,7 +27,7 @@ travelRouter.get(
 
 travelRouter.get(
   "/getTravels",
-  travelRouterInstance.getTravels.bind(travelRouterInstance)
+  travelRouterInstance.getManyTravels.bind(travelRouterInstance)
 );
 
 export default travelRouter;
