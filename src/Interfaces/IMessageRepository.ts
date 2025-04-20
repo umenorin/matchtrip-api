@@ -1,4 +1,3 @@
-import UserDtoRequest from "../DTO/UserDtoRequest.js";
 import MessageDto from "../DTO/MessageDto.js";
 
 interface IMessageRepository {
@@ -6,7 +5,7 @@ interface IMessageRepository {
   getById(id: string): Promise<MessageDto | null>;
 
   // this method will create a message
-  sendMessage(userId: string): void;
+  sendMessage(userId: string, messageDto: MessageDto): void;
 
   deleteMessage(userId: string, id: string): boolean;
 
