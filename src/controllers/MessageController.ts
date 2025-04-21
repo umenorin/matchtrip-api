@@ -16,22 +16,49 @@ export default class UserController {
   }
 
   public async postMessage(req: Request, res: Response) {
-    try{
-        const { user } = req.body;
-        const { message } = req.body;
-    
-        const messageDto = new MessageDto({ content: message.content as string });
-        const newMessage = await this._messageService.sendMessage(user.id,messageDto)
-        res.status(200).json({
-            message:"you send the message with success",
-            content: newMessage
-        })
-    } catch (error){
-        if (error instanceof CustomError) {
-          console.error("Message create failed:", error.message);
-          res.status(error.statusHttp).json({ error: error.message });
-          return;
-        }
+    try {
+      const { user } = req.body;
+      const { message } = req.body;
+
+      const messageDto = new MessageDto({ content: message.content as string });
+      const newMessage = await this._messageService.sendMessage(
+        user.id,
+        messageDto
+      );
+      res.status(200).json({
+        message: "you send the message with success",
+        content: newMessage,
+      });
+    } catch (error) {
+      if (error instanceof CustomError) {
+        console.error("Message create failed:", error.message);
+        res.status(error.statusHttp).json({ error: error.message });
+        return;
+      }
+    }
+  }
+
+  public async deleteMessage(req: Request, res: Response) {
+    try {
+      const { user } = req.body;
+      const { message } = req.body;
+
+      const isMessageDeleted = await this._messageService.deleteMessage(user.id,message.id)
+      if(!isMessageDeleted) {
+        res.status(400).json({
+          message: "your message wasn't deleted",
+        });
+      }
+
+      res.status(200).json({
+        message: "you message was deleted with success",
+      });
+    } catch (error) {
+      if (error instanceof CustomError) {
+        console.error("Message create failed:", error.message);
+        res.status(error.statusHttp).json({ error: error.message });
+        return;
+      }
     }
   }
 }

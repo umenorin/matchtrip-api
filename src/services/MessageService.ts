@@ -17,14 +17,20 @@ class MessageService implements IMessageService {
   getById(id: string): Promise<MessageDto | null> {
     throw new Error("Method not implemented.");
   }
-  sendMessage(userId: string, messageDto: MessageDto): Promise<MessageDto> {
-    const newMessage = this._messageRepository.sendMessage(userId,messageDto)
+
+  async sendMessage(userId: string, messageDto: MessageDto): Promise<MessageDto> {
+    const newMessage = await this._messageRepository.sendMessage(userId,messageDto)
 
     return newMessage;
   }
-  deleteMessage(userId: string, id: string): boolean {
-    throw new Error("Method not implemented.");
+  async deleteMessage(userId: string, id: string): Promise<boolean> {
+    const isMessageDeleted = await this._messageRepository.deleteMessage(userId,id)
+    if(isMessageDeleted){
+      return true
+    }
+    return false
   }
+  
   updateMessage(userId: string, id: string): boolean {
     throw new Error("Method not implemented.");
   }

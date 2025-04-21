@@ -10,4 +10,9 @@ messageRouter.post(
   messageRouterInstance.postMessage.bind(messageRouterInstance)
 );
 
+messageRouter.delete(
+  "/deleteMessage",
+  messageRouterInstance.deleteMessage.bind(messageRouterInstance)
+);
+
 export default messageRouter
