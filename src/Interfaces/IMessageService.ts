@@ -9,7 +9,7 @@ interface IMessageService {
 
   deleteMessage(userId: string, id: string): Promise<boolean>;
 
-  updateMessage(userId: string, id: string): boolean;
+  updateMessage(userId: string, message: MessageDto): Promise<boolean>;
 }
 
 export default IMessageService;

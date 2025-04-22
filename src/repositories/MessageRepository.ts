@@ -1,6 +1,5 @@
 import { injectable } from "tsyringe";
 import MessageDto from "../DTO/MessageDto.js";
-import UserDtoRequest from "../DTO/UserDtoRequest.js";
 import { CustomError } from "../errors/CustomError.js";
 import IMessageRepository from "../Interfaces/IMessageRepository.js";
 import { Message } from "../models/Message.js";
@@ -12,24 +11,28 @@ class MessageRepository implements IMessageRepository {
     if (id.length == 0) {
       throw new CustomError("Message not Found", 400);
     }
-    const message = await Message.findById(id).exec();
-    if (!message) {
-      throw new CustomError("Messsage not found", 400);
+    try {
+      const message = await Message.findById(id).exec();
+      if (!message) {
+        throw new CustomError("Messsage not found", 400);
+      }
+      const messageDto = new MessageDto({
+        id: id,
+        owner: message.owner as typeof User,
+        content: message.content as string,
+        dateMessageSend: message.createdAt as Date,
+      });
+      return messageDto;
+    } catch (error: any) {
+      throw new CustomError(error.message, 400);
     }
-    const messageDto = new MessageDto({
-      id: id,
-      owner: message.owner as typeof User,
-      content: message.content as string,
-      dateMessageSend: message.createdAt as Date,
-    });
-    return messageDto;
   }
   async sendMessage(
     userId: string,
     messageDto: MessageDto
   ): Promise<MessageDto> {
     try {
-      const user = verifyUserExitAndReturn(userId);
+      const user = await verifyUserExitAndReturn(userId);
       const newMessage = await Message.create({
         content: messageDto.content,
         owner: user,
@@ -58,11 +61,33 @@ class MessageRepository implements IMessageRepository {
     if (messageDeleted) {
       return true;
     }
-    return false
+    return false;
   }
 
-  updateMessage(userId: string, id: string): boolean {
-    throw new Error("Method not implemented.");
+  async updateMessage(userId: string, message: MessageDto): Promise<boolean> {
+    try {
+      const user:any = await verifyUserExitAndReturn(userId);
+
+      const existingMessage:any = await Message.findOne({ _id: message.id });
+      if (!existingMessage) {
+        throw new CustomError("Message doesn't exist", 400);
+      }
+
+      if (!user._id.equals(existingMessage.owner._id)) {
+        throw new CustomError("This is not your message", 401);
+      }
+
+      const updateResult = await Message.updateOne(
+        { _id: existingMessage._id },
+        { $set: { content: message.content } }
+      );
+      return updateResult.modifiedCount > 0;
+    } catch (error) {
+      if (error instanceof CustomError) {
+        throw error;
+      }
+      throw new CustomError("Failed to update message", 500);
+    }
   }
 }
 const verifyUserExitAndReturn = async (userId: string) => {

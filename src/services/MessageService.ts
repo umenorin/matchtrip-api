@@ -14,8 +14,9 @@ class MessageService implements IMessageService {
     this._messageRepository = messageRepository;
   }
 
-  getById(id: string): Promise<MessageDto | null> {
-    throw new Error("Method not implemented.");
+  async getById(id: string): Promise<MessageDto | null> {
+    const messageGetted = await this._messageRepository.getById(id)
+    return messageGetted
   }
 
   async sendMessage(userId: string, messageDto: MessageDto): Promise<MessageDto> {
@@ -31,8 +32,15 @@ class MessageService implements IMessageService {
     return false
   }
   
-  updateMessage(userId: string, id: string): boolean {
-    throw new Error("Method not implemented.");
+  async updateMessage(userId: string, message: MessageDto): Promise<boolean> {
+   const isMessageDeleted = await this._messageRepository.updateMessage(
+     userId,
+     message
+   );
+   if (isMessageDeleted) {
+     return true;
+   }
+   return false;
   }
 }
 

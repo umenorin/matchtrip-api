@@ -4,7 +4,6 @@ import ITravelRepository from "../Interfaces/ITravelRepository.js";
 import { Rating } from "../models/Rating.js";
 import { Travel } from "../models/Travel.js";
 import { CustomError } from "../errors/CustomError.js";
-import instance from "tsyringe/dist/typings/dependency-container.js";
 import TravelDto from "../DTO/TravelDto.js";
 
 @injectable()
