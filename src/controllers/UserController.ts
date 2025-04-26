@@ -47,7 +47,27 @@ export default class UserController {
       });
     } catch (error: any) {
       if (error instanceof CustomError) {
-        console.error("Travel edit failed:", error.message);
+        console.error("Login User Fail:", error.message);
+        res
+          .status(error.statusHttp)
+          .json({ message: error.message, error: error.message });
+        return;
+      }
+    }
+  }
+
+  public async getUser(req: Request, res: Response) {
+    try {
+      const { user } = req.body;
+      const userDto = new UserDtoRequest(user);
+      const userResponse = await this._userService.getUser(userDto);
+      res.status(200).json({
+        message: "Success!",
+        token: userResponse,
+      });
+    } catch (error: any) {
+      if (error instanceof CustomError) {
+        console.error("Get User fail: ", error.message);
         res
           .status(error.statusHttp)
           .json({ message: error.message, error: error.message });

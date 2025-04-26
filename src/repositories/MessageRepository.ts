@@ -66,9 +66,9 @@ class MessageRepository implements IMessageRepository {
 
   async updateMessage(userId: string, message: MessageDto): Promise<boolean> {
     try {
-      const user:any = await verifyUserExitAndReturn(userId);
+      const user: any = await verifyUserExitAndReturn(userId);
 
-      const existingMessage:any = await Message.findOne({ _id: message.id });
+      const existingMessage: any = await Message.findOne({ _id: message.id });
       if (!existingMessage) {
         throw new CustomError("Message doesn't exist", 400);
       }
@@ -90,6 +90,7 @@ class MessageRepository implements IMessageRepository {
     }
   }
 }
+
 const verifyUserExitAndReturn = async (userId: string) => {
   if (userId.length == 0) {
     throw new CustomError("User not found", 400);
@@ -100,4 +101,5 @@ const verifyUserExitAndReturn = async (userId: string) => {
   }
   return user;
 };
+
 export default MessageRepository;
