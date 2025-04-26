@@ -61,41 +61,73 @@ class UserService implements IUserService {
     });
   }
 
- deleteUser(id: string): void {
-  try {
-    this._userRepository.delete(id);
-  } catch (error) {
-    throw new CustomError("Internal Server Error", 500);
-  } 
- }
-  
- async editUser(id: string, userData: UserDtoRequest): Promise<UserDtoResponse> {
+  deleteUser(id: string): void {
+    try {
+      this._userRepository.delete(id);
+    } catch (error) {
+      throw new CustomError("Internal Server Error", 500);
+    }
+  }
+
+  async editUser(
+    id: string,
+    userData: UserDtoRequest
+  ): Promise<UserDtoResponse> {
     const existingUser = await this._userRepository.getById(id);
     if (!existingUser) throw new CustomError("User not Found", 404);
 
     if (userData.email && userData.email !== existingUser.email) {
-        const emailExists = await this._userRepository.getByEmail(userData.email);
-        if (emailExists) throw new CustomError("Email already exists", 400);
+      const emailExists = await this._userRepository.getByEmail(userData.email);
+      if (emailExists) throw new CustomError("Email already exists", 400);
     }
 
     if (userData.password) {
-        userData.password = bcrypt.hashSync(userData.password, 10);
+      userData.password = bcrypt.hashSync(userData.password, 10);
     }
 
     const updatedUser = await this._userRepository.update(id, userData);
     if (!updatedUser) throw new CustomError("Internal Server Error", 500);
 
     return new UserDtoResponse({
-        id: updatedUser.id,
-        email: updatedUser.email,
-        name: updatedUser.name,
-        numberPhone: updatedUser.numberPhone,
-        uniqueIdentification: updatedUser.uniqueIdentification,
-        age: updatedUser.age,
-        nationality: updatedUser.nationality,
-        gender: updatedUser.gender
+      id: updatedUser.id,
+      email: updatedUser.email,
+      name: updatedUser.name,
+      numberPhone: updatedUser.numberPhone,
+      uniqueIdentification: updatedUser.uniqueIdentification,
+      age: updatedUser.age,
+      nationality: updatedUser.nationality,
+      gender: updatedUser.gender,
     });
-  } 
+  }
+
+  async getUser(user: UserDtoRequest): Promise<UserDtoResponse> {
+    const _user = await User.findOne({ email: user.email });
+    console.log(_user);
+
+    if (!_user) {
+      throw new Error("Credenciais inválidas user");
+    }
+
+    const isPasswordValid = bcrypt.compareSync(
+      user.password,
+      _user.password as string
+    );
+
+    if (!isPasswordValid) {
+      throw new Error("Credenciais inválidas senha");
+    }
+
+    return new UserDtoResponse({
+      id: _user.id as string,
+      email: _user.email as string,
+      name: _user.name as string,
+      numberPhone: _user.numberPhone as string,
+      uniqueIdentification: _user.uniqueIdentification as string,
+      age: _user.age as number,
+      nationality: _user.nationality as string,
+      gender: _user.gender as string,
+    });
+  }
 }
 
 export default UserService;

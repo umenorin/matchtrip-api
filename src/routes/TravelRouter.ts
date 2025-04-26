@@ -21,8 +21,13 @@ travelRouter.delete(
 );
 
 travelRouter.get(
-  "/get",
+  "/",
   travelRouterInstance.getTravel.bind(travelRouterInstance)
+);
+
+travelRouter.get(
+  "/getTravels",
+  travelRouterInstance.getManyTravels.bind(travelRouterInstance)
 );
 
 export default travelRouter;

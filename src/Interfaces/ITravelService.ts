@@ -6,7 +6,7 @@ interface ITravelSevice {
   editTravel(travel: TravelDto): void;
   getTravel(travelId: string): Promise<TravelDto>;
   // This method have the objective get the  travels in the DB until to get the travelMaxQuantity valor
-  getTravels(travelMaxQuantity: number): Array<TravelDto>;
+  getManyTravels(travelMaxQuantity: number): Promise<TravelDto[]>;
 }
 
 export default ITravelSevice;
