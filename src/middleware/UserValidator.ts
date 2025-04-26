@@ -28,8 +28,6 @@ export const userValidator = (
   res: Response,
   next: NextFunction
 ) => {
-  const { user } = req.body;
-  console.log("userValidator: ", req.body);
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const phoneRegex = /^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/;
   const nameRegex = /^[a-zA-ZÀ-ÿ]+(?:\s+[a-zA-ZÀ-ÿ]+)*$/;
@@ -38,58 +36,64 @@ export const userValidator = (
 
   const invalidMessages = [];
 
-  //email
-  if (!emailRegex.test(user.email) || !user.email) {
-    invalidMessages.push("email invalid");
-  }
+  const { user } = req.body;
 
-  //number
-  if (!phoneRegex.test(user.numberPhone) || !user.numberPhone) {
-    invalidMessages.push("number phone invalid");
-  }
-
-  //name
-  if (!nameRegex.test(user.name) || !user.name) {
-    invalidMessages.push("name invalid");
-  }
-
-  //password
-  if (!user.password) {
-    invalidMessages.push("password invalid");
-  }
-  if (!passwordRegex.test(user.password)) {
-    invalidMessages.push(
-      "the password must contains uppercase letter, lowercase letter, number and specials caracters"
-    );
-  }
-  if (user.password.length < 6 || user.password.length > 16) {
-    invalidMessages.push(
-      "the password must contains in minimun 6 caracters and maximun 16 caracteres"
-    );
-  }
-  //message
-  if (user.age < 10 || user.age > 100) {
-    invalidMessages.push("the minimun age is 10 and the maximun age is 100");
-  }
-
-  //uniqueIdentification
-  if (!cpfRegex.test(user.uniqueIdentification)) {
-    invalidMessages.push("cpf lenght invalid");
-  }
-
-  if (!CPFTest(user.uniqueIdentification)) {
-    invalidMessages.push("cpf invalid");
-  }
-
-  user.numberPhone = user.numberPhone.replace(/\D/g, "");
-  user.uniqueIdentification = user.uniqueIdentification.replace(/\D/g, "");
-  //JSON
-  if (invalidMessages.length > 0) {
-    res.status(400).json({
-      message: "ocorred an error when you try create your user",
-      errors: invalidMessages.map((element) => element),
+  if (!user) {
+    return res.status(400).json({
+      message: "User data is missing in the request body.",
+      errors: ["The 'user' object is required."],
     });
-    return;
+  }
+
+  if (!user.email || !emailRegex.test(user.email)) {
+    invalidMessages.push("Email invalid");
+  }
+
+  if (!user.numberPhone || !phoneRegex.test(user.numberPhone)) {
+    invalidMessages.push("Phone number invalid");
+  }
+
+  if (!user.name || !nameRegex.test(user.name)) {
+    invalidMessages.push("Name invalid");
+  }
+
+  if (!user.password) {
+    invalidMessages.push("Password is required");
+  } else {
+    if (!passwordRegex.test(user.password)) {
+      invalidMessages.push(
+        "The password must contain at least one uppercase letter, one lowercase letter, one number, and one special character."
+      );
+    }
+    if (user.password.length < 6 || user.password.length > 16) {
+      invalidMessages.push(
+        "The password must be between 6 and 16 characters long."
+      );
+    }
+  }
+
+  if (user.age === undefined || user.age < 10 || user.age > 100) {
+    invalidMessages.push("Age must be between 10 and 100.");
+  }
+
+  if (!user.uniqueIdentification || !cpfRegex.test(user.uniqueIdentification)) {
+    invalidMessages.push("CPF format invalid");
+  } else if (!CPFTest(user.uniqueIdentification.replace(/\D/g, ""))) {
+    invalidMessages.push("CPF is invalid");
+  }
+
+  if (user.numberPhone) {
+    user.numberPhone = user.numberPhone.replace(/\D/g, "");
+  }
+  if (user.uniqueIdentification) {
+    user.uniqueIdentification = user.uniqueIdentification.replace(/\D/g, "");
+  }
+
+  if (invalidMessages.length > 0) {
+    return res.status(400).json({
+      message: "An error occurred while validating user data.",
+      errors: invalidMessages,
+    });
   }
 
   next();
