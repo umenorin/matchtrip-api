@@ -39,10 +39,11 @@ export const userValidator = (
   const { user } = req.body;
 
   if (!user) {
-    return res.status(400).json({
+    res.status(400).json({
       message: "User data is missing in the request body.",
       errors: ["The 'user' object is required."],
     });
+    return; 
   }
 
   if (!user.email || !emailRegex.test(user.email)) {
@@ -90,10 +91,11 @@ export const userValidator = (
   }
 
   if (invalidMessages.length > 0) {
-    return res.status(400).json({
+    res.status(400).json({
       message: "An error occurred while validating user data.",
       errors: invalidMessages,
     });
+    return; 
   }
 
   next();

@@ -2,30 +2,19 @@
 import { IRatingRepository } from "../Interfaces/IRatingRepository.js";
 import RatingDto from "../DTO/RatingDto.js";
 import { inject, injectable } from "tsyringe";
+import { IRatingService } from "../Interfaces/IRatingService.js";
 
 @injectable()
-export class RatingService {
+export class RatingService implements IRatingService{
   constructor(
-    @inject("IRatingRepository") private repository: IRatingRepository
+    @inject("IRatingRepository") private _ratingRepository: IRatingRepository
   ) {}
 
-  async createRating(rating: RatingDto): Promise<RatingDto> {
+  async getRating(id: string): Promise<RatingDto> {
     throw new Error("Method not implemented");
   }
 
-  async getRating(id: string): Promise<RatingDto | null> {
-    throw new Error("Method not implemented");
-  }
-
-  async getAllRatings(): Promise<RatingDto[]> {
-    throw new Error("Method not implemented");
-  }
-
-  async updateRating(id: string, rating: Partial<RatingDto>): Promise<RatingDto | null> {
-    throw new Error("Method not implemented");
-  }
-
-  async deleteRating(id: string): Promise<void> {
+  async updateRating(userRating: string, rating: RatingDto): Promise<RatingDto> {
     throw new Error("Method not implemented");
   }
 }

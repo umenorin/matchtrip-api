@@ -1,16 +1,16 @@
 import mongoose from "mongoose";
 
 import { Schema } from "mongoose";
+import { RatingOfUser } from "./RatingOfUser.js";
 
 export const RatingSchema: Schema = new Schema({
-  score: {
-    type: Number,
-    default: 0,
-  },
-  travelerWhoRating: [
+  ratings: [
     {
-      type: String,
-      maxlength: 255,
+      travelerOfUser: {
+        type: Schema.Types.ObjectId,
+        ref: RatingOfUser,
+        required: true,
+      },
     },
   ],
 });

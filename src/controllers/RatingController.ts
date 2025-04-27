@@ -5,21 +5,31 @@ import RatingDto from "../DTO/RatingDto.js";
 import { container } from "tsyringe";
 
 export class RatingController {
-  private service: IRatingService;
+  private _ratingservice: IRatingService;
 
   constructor() {
-    this.service = container.resolve<IRatingService>("IRatingService");
+    this._ratingservice = container.resolve<IRatingService>("IRatingService");
   }
 
-  async createRating(req: Request, res: Response) {
-    try {
-      const rating = new RatingDto(req.body);
-      const result = await this.service.createRating(rating);
-      res.status(201).json(result);
-    } catch (error: any) {
-      res.status(500).json({ error: error.message });
+  async sendRatingForTravel(req: Request, res: Response) {
+    const rating = req.body.rating ? req.body.rating : req.body.travel.rating;
+    const {userRating} = req.body // conter userID e o Score
+
+    if (!rating) {
+      res.status(400).json({
+        message: "this Rating is empty",
+      });
     }
-  }
 
-  // ... outros métodos do controller
+    if (!userRating) {
+      res.status(400).json({
+        message: "this user is empty",
+      });
+    }
+    const ratingDto = new RatingDto({
+      id: rating.id,
+      ratings:rating.ratings
+    });
+    this._ratingservice.updateRating(userRating, ratingDto);
+  }
 }

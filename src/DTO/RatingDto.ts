@@ -1,21 +1,19 @@
+import RatingOfUserDto from "./RatingOfUserDto.js";
+
 class RatingDto {
-  id?: string;	
-  score: number;
-  TravelerWhosRating: string;
+  id?: string;
+  ratingOfUser: RatingOfUserDto[];
 
   constructor({
     id,
-    score,
-    TravelerWhosRating,
-  } : {
-      id?: string;
-      score: number;
-      TravelerWhosRating: string;
+    ratingOfUser,
+  }: {
+    id?: string;
+    ratingOfUser: RatingOfUserDto[];
   }) {
-      this.id = id;
-      this.score = score;
-      this.TravelerWhosRating = TravelerWhosRating;
+    this.id = id;
+    this.ratingOfUser = ratingOfUser;
   }
 }
 
-export default RatingDto
+export default RatingDto;
