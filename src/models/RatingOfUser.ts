@@ -1,13 +1,11 @@
 import mongoose from "mongoose";
-
 import { Schema } from "mongoose";
-import { User } from "./User.js";
 
 export const RatingOfUserSchema: Schema = new Schema({
   userId: {
-    type: Schema.Types.ObjectId,
-    ref: User,
+    type: String,
     required: true,
+    maxlength: 255,
   },
 
   score: {

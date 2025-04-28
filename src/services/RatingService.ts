@@ -14,7 +14,8 @@ export class RatingService implements IRatingService{
     throw new Error("Method not implemented");
   }
 
-  async updateRating(userRating: string, rating: RatingDto): Promise<RatingDto> {
-    throw new Error("Method not implemented");
+  async updateRating( rating: RatingDto): Promise<RatingDto> {
+    const ratingUpdated = this._ratingRepository.update(rating)
+    return ratingUpdated;
   }
 }

@@ -1,9 +1,8 @@
 import { inject, injectable } from "tsyringe";
 import ITravelService from "../Interfaces/ITravelService.js";
 import { Request, Response } from "express";
-import TravelDtoRequest from "../DTO/TravelDto.js";
+import {TravelDtoRequest, TravelDtoResponse} from "../DTO/TravelDto.js";
 import { CustomError } from "../errors/CustomError.js";
-import TravelDto from "../DTO/TravelDto.js";
 
 @injectable()
 export default class TravelController {
@@ -109,7 +108,7 @@ export default class TravelController {
     const maxTravelNumber = Number(req.body.maxTravel);
     console.log(maxTravelNumber)
     try {
-      const travels: TravelDto[] = await this._travelService.getManyTravels(
+      const travels: TravelDtoResponse[] = await this._travelService.getManyTravels(
         maxTravelNumber
       );
       if (travels.length == 0) {

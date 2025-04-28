@@ -3,6 +3,7 @@ import { Router } from "express";
 import userRouter from "./UsersRouter.js";
 import travelRouter from "./TravelRouter.js";
 import messageRouter from "./MessageRouter.js";
+import ratingRouter from "./RatingRouter.js";
 
 const router = Router();
 
@@ -25,5 +26,6 @@ router.get("/", (req: Request, res: Response) => {
 router.use("/users", userRouter);
 router.use("/travel", travelRouter);
 router.use("/message",messageRouter)
+router.use("/rating", ratingRouter);
 
 export default router;

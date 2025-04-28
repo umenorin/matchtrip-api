@@ -1,5 +1,5 @@
 import { inject, injectable } from "tsyringe";
-import TravelDto from "../DTO/TravelDto.js";
+import {TravelDtoRequest, TravelDtoResponse} from "../DTO/TravelDto.js";
 import ITravelRepository from "../Interfaces/ITravelRepository.js";
 import ITravelSevice from "../Interfaces/ITravelService.js";
 
@@ -13,7 +13,7 @@ export class TravelService implements ITravelSevice {
     this._travelRepository = travelRepository;
   }
 
-  async createTravel(travelDto: TravelDto): Promise<void> {
+  async createTravel(travelDto: TravelDtoRequest): Promise<void> {
     await this._travelRepository.register(travelDto);
   }
 
@@ -21,15 +21,17 @@ export class TravelService implements ITravelSevice {
     await this._travelRepository.deleteTravel(travelId);
   }
 
-  async editTravel(travel: TravelDto): Promise<void> {
+  async editTravel(travel: TravelDtoRequest): Promise<void> {
     await this._travelRepository.editTravel(travel);
   }
 
-  async getTravel(travelId: string): Promise<TravelDto> {
+  async getTravel(travelId: string): Promise<TravelDtoResponse> {
     return await this._travelRepository.getTravel(travelId);
   }
 
-  async getManyTravels(travelMaxQuantity: number): Promise<TravelDto[]> {
+  async getManyTravels(
+    travelMaxQuantity: number
+  ): Promise<TravelDtoResponse[]> {
     return await this._travelRepository.getManyTravels(travelMaxQuantity);
   }
 }

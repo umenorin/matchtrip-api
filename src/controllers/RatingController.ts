@@ -5,8 +5,9 @@ import RatingDto from "../DTO/RatingDto.js";
 import { container } from "tsyringe";
 import { RatingOfUser } from "../models/RatingOfUser.js";
 import RatingOfUserDto from "../DTO/RatingOfUserDto.js";
+import { CustomError } from "../errors/CustomError.js";
 
-export class RatingController {
+export default class RatingController {
   private _ratingservice: IRatingService;
 
   constructor() {
@@ -14,28 +15,43 @@ export class RatingController {
   }
 
   async sendRatingForTravel(req: Request, res: Response) {
-    const rating = req.body.rating ? req.body.rating : req.body.travel.rating;
-    const {userRating} = req.body // conter userID e o Score
+    try {
+      const rating = req.body.rating ? req.body.rating : req.body.travel.rating;
+      const { userRating } = req.body; // conter userID e o Score
+      if (!rating) {
+        res.status(400).json({
+          message: "this Rating is empty",
+        });
+      }
 
-    if (!rating) {
-      res.status(400).json({
-        message: "this Rating is empty",
+      if (!userRating) {
+        res.status(400).json({
+          message: "this user is empty",
+        });
+      }
+
+      const ratingDto = new RatingDto({
+        id: rating.id,
+        ratingOfUser: [
+          new RatingOfUserDto({
+            userId: userRating.userId,
+            score: userRating.score,
+          }),
+        ],
       });
-    }
 
-    if (!userRating) {
-      res.status(400).json({
-        message: "this user is empty",
-      });
+      const ratingUpdated = await this._ratingservice.updateRating(ratingDto);
+      res.status(200).json({
+        message:"your rating has send",
+        token: ratingUpdated
+      })
+    } catch (error: any) {
+      if (error instanceof CustomError) {
+        console.error("Rating insert failed:", error.message);
+        res.status(error.statusHttp).json({ error: error.message });
+        return;
+      }
+      res.status(500).json(error);
     }
-
-    const ratingDto = new RatingDto({
-      id: rating.id,
-      ratingOfUser:[
-        new RatingOfUserDto({userId:userRating.userId, score:userRating.score})
-      ]
-    });
-    
-    this._ratingservice.updateRating(userRating, ratingDto);
   }
 }

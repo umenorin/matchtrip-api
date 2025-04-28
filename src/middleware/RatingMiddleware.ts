@@ -1,43 +1,71 @@
 // src/middleware/RatingMiddleware.ts
 import { Request, Response, NextFunction } from "express";
 import RatingDto from "../DTO/RatingDto.js";
+import RatingOfUserDto from "../DTO/RatingOfUserDto.js";
 
-export class RatingMiddleware {
-  static validateRating(req: Request, res: Response, next: NextFunction) {
-    try {
-      // Cria instância do DTO usando o construtor
-      const rating = new RatingDto({
-        id: req.body.id,
-        score: req.body.score,
-        TravelerWhosRating: req.body.TravelerWhosRating
+export const validateRating = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const ratingId = req.body.rating
+      ? req.body.rating
+      : req.body.travel?.rating;
+
+    const { userRating } = req.body;
+
+    // Validações iniciais
+    if (!ratingId) {
+      res.status(400).json({
+        message: "Rating ID is required",
       });
-
-      // Validação manual
-      const errors: string[] = [];
-
-      // Validação do score
-      if (typeof rating.score !== "number" || rating.score < 1 || rating.score > 5) {
-        errors.push("Score must be 1 or 5");
-      }
-
-      // Validação do TravelerWhosRating
-      if (typeof rating.TravelerWhosRating !== "string") {
-        errors.push("TravelerWhosRating must be a string");
-      }
-
-      if (errors.length > 0) {
-        return res.status(400).json({ errors });
-      }
-
-      next();
-    } catch (error) {
-      res.status(400).json({ error: "Formato de dados inválido" });
+      return;
     }
-  }
 
-  static calculateAverageRating(existingRatings: RatingDto[]): number {
-    if (existingRatings.length === 0) return 0;
-    const total = existingRatings.reduce((sum, rating) => sum + rating.score, 0);
-    return Number((total / existingRatings.length).toFixed(1));
+    if (!userRating) {
+      res.status(400).json({
+        message: "User rating data is required",
+      });
+      return;
+    }
+
+    // Validação dos campos
+    const errors: string[] = [];
+
+    if (
+      typeof userRating.score !== "number" ||
+      userRating.score < 1 ||
+      userRating.score > 5
+    ) {
+      errors.push("Score must be between 1 and 5");
+    }
+
+    if (typeof userRating.userId !== "string") {
+      errors.push("User ID must be a string");
+    }
+
+    if (errors.length > 0) {
+      res.status(400).json({ errors });
+      return;
+    }
+
+    // Se tudo estiver válido, chama next()
+    next();
+  } catch (error) {
+    console.error("Validation error:", error);
+    res.status(500).json({ error: "Internal server error during validation" });
+    return;
   }
-}
+};
+
+export const calculateAverageRating = (
+  existingRatings: RatingDto[]
+): number => {
+  if (existingRatings.length === 0) return 0;
+  const total = existingRatings.reduce(
+    (sum, rating) => sum + rating.ratingOfUser[0].score,
+    0
+  );
+  return Number((total / existingRatings.length).toFixed(1));
+};

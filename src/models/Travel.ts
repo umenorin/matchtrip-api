@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 import { Schema } from "mongoose";
-import { RatingSchema } from "./Rating.js";
+import { Rating } from "./Rating.js";
 
 export const TravelSchema: Schema = new Schema({
   name: {
@@ -27,7 +27,11 @@ export const TravelSchema: Schema = new Schema({
     required: true,
     maxlength: 255,
   },
-  rating: RatingSchema,
+  rating: {
+    type: Schema.Types.ObjectId,
+    ref: Rating,
+    required: true,
+  },
 });
 
 export const Travel = mongoose.model("Travel", TravelSchema);

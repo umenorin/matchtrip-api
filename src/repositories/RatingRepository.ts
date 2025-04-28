@@ -6,7 +6,6 @@ import { User } from "../models/User.js";
 import { CustomError } from "../errors/CustomError.js";
 import { Rating } from "../models/Rating.js";
 import RatingOfUserDto from "../DTO/RatingOfUserDto.js";
-import { RatingOfUser } from "../models/RatingOfUser.js";
 
 @injectable()
 export class RatingRepository implements IRatingRepository {
@@ -15,76 +14,84 @@ export class RatingRepository implements IRatingRepository {
   }
 
   async update(rating: RatingDto): Promise<RatingDto> {
-    const newRating = rating.ratingOfUser[0].userId
-    const isUserFind = await this.findUserExist(newRating);
-    if (!isUserFind) {
-      throw new CustomError("This User doesn't exist", 400);
-    }
+    try {
+      const newRating = rating.ratingOfUser[0].userId;
+      const isUserFind = await this.findUserExist(newRating);
+      if (!isUserFind) {
+        throw new CustomError("This User doesn't exist", 400);
+      }
 
-    // Verifica se o rating existe
-    const ratingExists:any = await Rating.findById(rating.id).exec();
-    if (!ratingExists) {
-      throw new CustomError("This Rating doesn't exist", 400);
-    }
-    
-    // Verifica se o usuário já avaliou
-    const userRatingExists = ratingExists.ratings.some(
-      (rating: any) => rating.travelerOfUser.toString() === newRating
-    );
-
-    if (userRatingExists) {
-      // Atualiza a avaliação existente
-      await Rating.updateOne(
-        {
-          _id: rating.id,
-          "ratings.travelerOfUser": newRating,
-        },
-        {
-          $set: { "ratings.$.score": rating.ratingOfUser[0].score },
-        }
+      // Verifica se o rating existe
+      const ratingExists: any = await Rating.findById(rating.id).exec();
+      if (!ratingExists) {
+        throw new CustomError("This Rating doesn't exist", 400);
+      }
+      console.log("rating: ", ratingExists);
+      // Verifica se o usuário já avaliou
+      // Verificação segura com todas as validações necessárias
+      const userRatingExists = await this.hasUserRated(
+        rating.id as string,
+        rating.ratingOfUser[0].userId
       );
-    } else {
-      // Cria uma nova avaliação do usuário
-      const newUserRating:any = await this.CreateRatingOfUser(rating.ratingOfUser[0])
+      console.log("awdhuiwahduaiwdhiawd ", userRatingExists);
 
-      // Adiciona a nova avaliação ao rating principal
-      await Rating.updateOne(
-        { _id: rating.id },
-        {
-          $push: {
-            ratings: { travelerOfUser: newUserRating._id },
+      if (userRatingExists) {
+        // Atualiza a avaliação existente
+        await Rating.updateOne(
+          {
+            _id: rating.id,
+            "ratings.userId": newRating, // Encontra o documento com o userId específico
           },
-        }
-      );
-    }
+          {
+            $set: { "ratings.$.score": rating.ratingOfUser[0].score }, // Usa $ para referenciar o elemento encontrado
+          }
+        );
+      } else {
+        // Adiciona a nova avaliação ao rating principal
+        const teste = await Rating.updateOne(
+          { _id: rating.id },
+          {
+            $push: {
+              ratings: {
+                score: rating.ratingOfUser[0].score,
+                userId: rating.ratingOfUser[0].userId,
+              },
+            },
+          }
+        ).exec();
+      }
 
-    // Retorna o rating atualizado
-    const ratingUpdated:any = await Rating.findById(rating.id)
-      .populate("ratings.travelerOfUser")
-      .exec();
+      // Retorna o rating atualizado
+      const ratingUpdated: any = await Rating.findById(rating.id)
+        .populate("ratings")
+        .exec();
+      if (!ratingUpdated) {
+        throw new Error("Rating not found");
+      }
 
-    if (!ratingUpdated) {
-      throw new Error("Rating not found");
-    }
-
-    // Mapeia cada rating para o DTO correspondente
-    const ratingOfUserDtos = ratingUpdated.ratings.map((rating:any) => {
-      return new RatingOfUserDto({
-        id:rating._id,
-        userId: rating.travelerOfUser._id.toString(),
-        score: rating.travelerOfUser.score,
-        // inclua outros campos necessários aqui
+      // Mapeia cada rating para o DTO correspondente
+      const ratingOfUserDtos = ratingUpdated.ratings.map((rating: any) => {
+        console.log("teajdmwaiodjaowdjiawdioaw: ",rating)
+        return new RatingOfUserDto({
+          id: rating._id,
+          userId: rating.userId,
+          score: rating.score,
+          // inclua outros campos necessários aqui
+        });
       });
-    });
 
-    const ratingUpdatedDto = new RatingDto({
-      id: ratingUpdated._id.toString(),
-      ratingOfUser: ratingOfUserDtos,
-    });
-    return ratingUpdatedDto;
+      const ratingUpdatedDto = new RatingDto({
+        id: ratingUpdated._id.toString(),
+        ratingOfUser: ratingOfUserDtos,
+      });
+      return ratingUpdatedDto;
+    } catch (error: any) {
+      console.log("error: ", error);
+      throw new CustomError("error in set the rating", 400);
+    }
   }
 
-  async findUserExist(id: string): Promise<boolean> {
+  private async findUserExist(id: string): Promise<boolean> {
     const isUserFinded = await User.findById(id);
 
     if (isUserFinded) {
@@ -93,12 +100,11 @@ export class RatingRepository implements IRatingRepository {
     return false;
   }
 
-  async CreateRatingOfUser(ratingOfUser: RatingOfUserDto) {
-    const isUserRatingHasCreated = await RatingOfUser.create({
-      userId: ratingOfUser.userId,
-      score: ratingOfUser.score,
+  private async hasUserRated(ratingId: string, userId: string) {
+    const rating = await Rating.findOne({
+      _id: ratingId,
+      "ratings.userId": userId,
     });
-    if (isUserRatingHasCreated) return true;
-    return false;
+    return rating !== null;
   }
 }
