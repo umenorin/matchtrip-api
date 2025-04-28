@@ -6,11 +6,29 @@ import { User } from "../models/User.js";
 import { CustomError } from "../errors/CustomError.js";
 import { Rating } from "../models/Rating.js";
 import RatingOfUserDto from "../DTO/RatingOfUserDto.js";
+import { calculateAverageRating } from "../middleware/RatingMiddleware.js";
 
 @injectable()
 export class RatingRepository implements IRatingRepository {
-  findById(id: string): Promise<RatingDto> {
-    throw new Error("Method not implemented");
+  async findById(id: string): Promise<RatingDto> {
+    let sumScore: number = 0;
+    const rating: any = await Rating.findById(id).exec();
+    console.log(rating);
+    if (!rating) {
+      throw new CustomError("This rating doesn't exist", 400);
+    }
+
+    rating.ratings.forEach((rating: any) => {
+      sumScore += rating.score as number;
+    });
+    const totalScore = sumScore / rating.ratings.length;
+    const ratingGettedDto = new RatingDto({
+      id: rating._id,
+      ratingOfUser: rating.ratings,
+      totalScore: totalScore,
+    });
+    console.log(ratingGettedDto);
+    return ratingGettedDto
   }
 
   async update(rating: RatingDto): Promise<RatingDto> {
@@ -71,7 +89,6 @@ export class RatingRepository implements IRatingRepository {
 
       // Mapeia cada rating para o DTO correspondente
       const ratingOfUserDtos = ratingUpdated.ratings.map((rating: any) => {
-        console.log("teajdmwaiodjaowdjiawdioaw: ",rating)
         return new RatingOfUserDto({
           id: rating._id,
           userId: rating.userId,

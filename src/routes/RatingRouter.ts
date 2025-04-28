@@ -8,9 +8,14 @@ const ratingRouter = Router();
 const RatingControllerInstance = container.resolve(RatingController);
 
 ratingRouter.post(
-    "/sendRating",
-    validateRating,
-    RatingControllerInstance.sendRatingForTravel.bind(RatingControllerInstance)
+  "/sendRating",
+  validateRating,
+  RatingControllerInstance.sendRatingOfTravel.bind(RatingControllerInstance)
+);
+
+ratingRouter.get(
+  "/getRating",
+  RatingControllerInstance.getRatingOfTravel.bind(RatingControllerInstance)
 );
 
 export default ratingRouter;

@@ -15,7 +15,6 @@ export const validateRating = (
 
     const { userRating } = req.body;
 
-    // Validações iniciais
     if (!ratingId) {
       res.status(400).json({
         message: "Rating ID is required",
@@ -30,7 +29,6 @@ export const validateRating = (
       return;
     }
 
-    // Validação dos campos
     const errors: string[] = [];
 
     if (
@@ -50,7 +48,6 @@ export const validateRating = (
       return;
     }
 
-    // Se tudo estiver válido, chama next()
     next();
   } catch (error) {
     console.error("Validation error:", error);
@@ -59,12 +56,10 @@ export const validateRating = (
   }
 };
 
-export const calculateAverageRating = (
-  existingRatings: RatingDto[]
-): number => {
+export const calculateAverageRating = (existingRatings: RatingOfUserDto[]): number => {
   if (existingRatings.length === 0) return 0;
   const total = existingRatings.reduce(
-    (sum, rating) => sum + rating.ratingOfUser[0].score,
+    (sum, rating) => sum + rating.score,
     0
   );
   return Number((total / existingRatings.length).toFixed(1));

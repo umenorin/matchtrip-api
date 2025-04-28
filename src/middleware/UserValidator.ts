@@ -29,7 +29,8 @@ export const userValidator = (
   next: NextFunction
 ) => {
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  const phoneRegex = /^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/;
+  const phoneRegex =
+    /^(\+55|55)?\s?(\()?(\d{2})(\))?\s?(\d{4,5})(-|\s)?(\d{4})$/;
   const nameRegex = /^[a-zA-ZÀ-ÿ]+(?:\s+[a-zA-ZÀ-ÿ]+)*$/;
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{1,}$/;
   const cpfRegex = /^\d{3}\.?\d{3}\.?\d{3}-?\d{2}$/;
@@ -37,13 +38,13 @@ export const userValidator = (
   const invalidMessages = [];
 
   const { user } = req.body;
-
+  console.log(req.body);
   if (!user) {
     res.status(400).json({
       message: "User data is missing in the request body.",
       errors: ["The 'user' object is required."],
     });
-    return; 
+    return;
   }
 
   if (!user.email || !emailRegex.test(user.email)) {
@@ -95,7 +96,7 @@ export const userValidator = (
       message: "An error occurred while validating user data.",
       errors: invalidMessages,
     });
-    return; 
+    return;
   }
 
   next();
