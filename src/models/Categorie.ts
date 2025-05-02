@@ -1,6 +1,8 @@
-import mongoose from "mongoose";
+import mongoose, { Document, Schema } from "mongoose"
 
-import { Schema } from "mongoose";
+export interface CategoryDocument extends Document {
+  name: string;
+}
 
 const CategoriesSchema: Schema = new Schema({
   name: {
@@ -10,4 +12,4 @@ const CategoriesSchema: Schema = new Schema({
   },
 });
 
-export const Categorie = mongoose.model("Categorie", CategoriesSchema);
+export const Category = mongoose.model<CategoryDocument>("Category", CategoriesSchema);
