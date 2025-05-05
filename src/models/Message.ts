@@ -10,11 +10,6 @@ const MessageSchema: Schema = new Schema(
       require: true,
       maxLenght: 255,
     },
-    owner: {
-      type: Schema.Types.ObjectId, 
-      ref: User,
-      required: true,
-    },
   },
   {
     timestamps: true, // Adiciona `createdAt` e `updatedAt` automaticamente

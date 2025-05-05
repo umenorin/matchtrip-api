@@ -2,28 +2,25 @@ import mongoose from "mongoose";
 
 import { Schema } from "mongoose";
 import { User } from "./User.js";
-import { Travel } from "./Travel.js";
+import { Message } from "./Message.js";
 
-const UserTravelSchema: Schema = new Schema(
+const UserMessageSchema: Schema = new Schema(
   {
     userId: {
       type: Schema.Types.ObjectId,
       ref: User,
       required: true,
     },
-    travelId: {
+    messageId: {
       type: Schema.Types.ObjectId,
-      ref: Travel,
+      ref: Message,
       required: true,
     },
-    isOwner: {
-      type: Boolean,
-      require: true,
-    },
+   
   },
   {
     timestamps: true, // Adiciona `createdAt` e `updatedAt` automaticamente
   }
 );
 
-export const UserTravel = mongoose.model("UserTravel", UserTravelSchema);
+export const UserMessage = mongoose.model("UserMessage", UserMessageSchema);
