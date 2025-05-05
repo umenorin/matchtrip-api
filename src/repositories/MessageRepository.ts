@@ -5,6 +5,7 @@ import IMessageRepository from "../Interfaces/IMessageRepository.js";
 import { Message } from "../models/Message.js";
 import { User } from "../models/User.js";
 import { UserMessage } from "../models/UserMessage.js";
+import { Chat } from "../models/Chat.js";
 
 @injectable()
 class MessageRepository implements IMessageRepository {
@@ -37,10 +38,12 @@ class MessageRepository implements IMessageRepository {
   }
   async sendMessage(
     userId: string,
+    chatId:string,
     messageDto: MessageDto
   ): Promise<MessageDto> {
     try {
       const user = await verifyUserExitAndReturn(userId);
+      const chat = await verifyChatExitAndReturn(chatId);
       const newMessage = await Message.create({
         content: messageDto.content,
         owner: user,
@@ -48,7 +51,15 @@ class MessageRepository implements IMessageRepository {
       if (!newMessage) {
         throw new CustomError("Message don't send", 400);
       }
+
       await UserMessage.create({ userId: user._id, messageId: newMessage._id });
+
+      await Chat.findByIdAndUpdate(
+        chat._id,
+        { $push: { messages: newMessage._id } }, 
+        { new: true }
+      );
+
       messageDto.owner = user;
       return messageDto;
     } catch (error: any) {
@@ -111,6 +122,17 @@ const verifyUserExitAndReturn = async (userId: string) => {
     throw new CustomError("User not found", 400);
   }
   return user;
+};
+
+const verifyChatExitAndReturn = async (chatId: string) => {
+  if (chatId.length == 0) {
+    throw new CustomError("chat not found", 400);
+  }
+  const chat = await Chat.findById(chatId);
+  if (!chat) {
+    throw new CustomError("chat not found", 400);
+  }
+  return chat;
 };
 
 export default MessageRepository;

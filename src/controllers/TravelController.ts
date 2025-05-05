@@ -19,10 +19,14 @@ export default class TravelController {
     const { travel } = req.body;
     const travelDto = new TravelDtoRequest({
       name: travel.name,
+      description: travel.description, 
       latitude: travel.latitude,
       longitude: travel.longitude,
       city: travel.city,
       country: travel.country,
+      startDate: travel.startDate, 
+      endDate: travel.endDate, 
+      limitTravelers: travel.travelLimit, 
     });
 
     try {
@@ -41,12 +45,15 @@ export default class TravelController {
   public async updateTravel(req: Request, res: Response) {
     const { travel } = req.body;
     const travelDto = new TravelDtoRequest({
-      id: travel.id,
       name: travel.name,
+      description: travel.description, 
       latitude: travel.latitude,
       longitude: travel.longitude,
       city: travel.city,
       country: travel.country,
+      startDate: travel.startDate, 
+      endDate: travel.endDate, 
+      limitTravelers: travel.travelLimit, 
     });
 
     try {

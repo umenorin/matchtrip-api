@@ -5,7 +5,7 @@ interface IMessageService {
   getById(id: string): Promise<MessageDto | null>;
 
   // this method will create a message
-  sendMessage(userId: string, messageDto: MessageDto): Promise<MessageDto>;
+  sendMessage(userId: string,chatId:string ,messageDto: MessageDto): Promise<MessageDto>;
 
   deleteMessage(userId: string, id: string): Promise<boolean>;
 

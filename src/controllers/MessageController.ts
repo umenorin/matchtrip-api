@@ -3,6 +3,7 @@ import { inject, injectable } from "tsyringe";
 import { CustomError } from "../errors/CustomError.js";
 import IMessageService from "../Interfaces/IMessageService.js";
 import MessageDto from "../DTO/MessageDto.js";
+import ChatDto from "../DTO/ChatDto.js";
 
 @injectable()
 export default class UserController {
@@ -32,12 +33,13 @@ export default class UserController {
 
   public async postMessage(req: Request, res: Response) {
     try {
+      const { chat } = req.body;
       const { user } = req.body;
       const { message } = req.body;
-
       const messageDto = new MessageDto({ content: message.content as string });
       const newMessage = await this._messageService.sendMessage(
         user.id,
+        chat.id,
         messageDto
       );
       res.status(200).json({

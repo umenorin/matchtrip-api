@@ -19,8 +19,8 @@ class MessageService implements IMessageService {
     return messageGetted
   }
 
-  async sendMessage(userId: string, messageDto: MessageDto): Promise<MessageDto> {
-    const newMessage = await this._messageRepository.sendMessage(userId,messageDto)
+  async sendMessage(userId: string,chatId:string ,messageDto: MessageDto): Promise<MessageDto> {
+    const newMessage = await this._messageRepository.sendMessage(userId,chatId,messageDto)
 
     return newMessage;
   }
