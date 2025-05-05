@@ -11,36 +11,46 @@ import IMessageService from "./Interfaces/IMessageService.js";
 import { RatingRepository } from "./repositories/RatingRepository.js";
 import { RatingService } from "./services/RatingService.js";
 import { IRatingService } from "./Interfaces/IRatingService.js";
+import { CategoryRepository } from "./repositories/CategoryRepository.js";
+import { CategoryService } from "./services/CategoryService.js";
+import { ICategoryService } from "./Interfaces/ICategoryService.js";
 
 // Registro de Repositórios parabens mano
 container.register("IUserRepository", {
-  useClass: UserRepository
+  useClass: UserRepository,
 });
 
 container.register("ITravelRepository", {
-  useClass: TravelRepository
+  useClass: TravelRepository,
 });
-container.register("IMessageRepository",{
-  useClass: MessageRepository
-})
+container.register("IMessageRepository", {
+  useClass: MessageRepository,
+});
 container.register("IRatingRepository", {
   useClass: RatingRepository,
+});
+container.register("ICategoryRepository", {
+  useClass: CategoryRepository,
 });
 
 // Registro de Services ta voando em
 container.register<IUserService>("IUserService", {
-  useClass: UserService
+  useClass: UserService,
 });
 
 container.register<ITravelService>("ITravelService", {
-  useClass: TravelService
+  useClass: TravelService,
 });
 
 container.register<IMessageService>("IMessageService", {
-  useClass: MessageService
+  useClass: MessageService,
 });
 
 container.register<IRatingService>("IRatingService", {
   useClass: RatingService,
+});
+
+container.register<ICategoryService>("ICategoryService", {
+  useClass: CategoryService,
 });
 export { container };

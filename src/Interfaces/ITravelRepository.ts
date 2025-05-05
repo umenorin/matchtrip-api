@@ -1,11 +1,11 @@
-import TravelDto from "../DTO/TravelDto.js";
+import {TravelDtoRequest,TravelDtoResponse} from "../DTO/TravelDto.js";
 
 interface ITravelRepository {
-  register(travelDto: TravelDto): void;
+  register(travelDto: TravelDtoRequest): void;
   deleteTravel(travelId: string): void;
-  editTravel(travel: TravelDto): void;
-  getTravel(travelID: string): Promise<TravelDto>;
-  getManyTravels(maxTravels: number): Promise<TravelDto[]>
+  editTravel(travel: TravelDtoRequest): void;
+  getTravel(travelID: string): Promise<TravelDtoResponse>;
+  getManyTravels(maxTravels: number): Promise<TravelDtoResponse[]>;
 }
 
 export default ITravelRepository;

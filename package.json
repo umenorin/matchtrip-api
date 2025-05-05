@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@sequelize/mariadb": "^7.0.0-alpha.45",
+    "@types/jsonwebtoken": "^9.0.9",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^3.0.2",
     "class-transformer": "^0.5.1",
