@@ -4,7 +4,6 @@ import { CustomError } from "../errors/CustomError.js";
 import IMessageRepository from "../Interfaces/IMessageRepository.js";
 import { Message } from "../models/Message.js";
 import { User } from "../models/User.js";
-import { UserMessage } from "../models/UserMessage.js";
 import { Chat } from "../models/Chat.js";
 
 @injectable()
@@ -18,16 +17,12 @@ class MessageRepository implements IMessageRepository {
       if (!message) {
         throw new CustomError("Messsage not found", 400);
       }
-      const messageOwner = await UserMessage.findOne({
-        messageId: message._id,
-      }).populate("userId", "name email"); 
+    
 
-      if (!messageOwner) {
-        throw new CustomError("Message owner not found", 400);
-      }
+      
       const messageDto = new MessageDto({
         id: id,
-        owner: messageOwner.userId as typeof User,
+        owner: message.owner as typeof User,
         content: message.content as string,
         dateMessageSend: message.createdAt as Date,
       });
@@ -52,8 +47,6 @@ class MessageRepository implements IMessageRepository {
         throw new CustomError("Message don't send", 400);
       }
 
-      await UserMessage.create({ userId: user._id, messageId: newMessage._id });
-
       await Chat.findByIdAndUpdate(
         chat._id,
         { $push: { messages: newMessage._id } }, 
@@ -75,12 +68,9 @@ class MessageRepository implements IMessageRepository {
     console.log(message)
     console.log(user._id);
    
-    const userMessagedeleted: any = await UserMessage.findOneAndDelete({
-      messageId: message._id,
-    });
     const messageDeleted: any = await Message.deleteOne(message);
 
-    if (messageDeleted && userMessagedeleted) {
+    if (messageDeleted) {
       return true;
     }
     return false;

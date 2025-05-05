@@ -5,6 +5,7 @@ import travelRouter from "./TravelRouter.js";
 import messageRouter from "./MessageRouter.js";
 import ratingRouter from "./RatingRouter.js";
 import categoryRouter from "./CategoryRouter.js";
+import chatRouter from "./ChatRouter.js";
 
 const router = Router();
 
@@ -29,5 +30,5 @@ router.use("/travel", travelRouter);
 router.use("/message",messageRouter)
 router.use("/rating", ratingRouter);
 router.use("/category",categoryRouter)
-
+router.use("/chat", chatRouter);
 export default router;

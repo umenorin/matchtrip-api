@@ -9,7 +9,7 @@ export class ChatService implements IChatService {
     @inject("IChatRepository") private _chatRepository: IChatRepository
   ) {}
     getchat(id: string): Promise<ChatDto | null> {
-        throw new Error("Method not implemented.");
+        return this._chatRepository.getById(id)
     }
 
  
