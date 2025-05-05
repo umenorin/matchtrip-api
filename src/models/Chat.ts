@@ -5,8 +5,18 @@ import { TravelGroup } from "./TravelGroup.js";
 import { Message } from "./Message.js";
 
 const ChatSchema: Schema = new Schema({
-  travel: TravelGroup,
-  messages: [Message],
+  
+  travel: {
+    type: String,
+    require: true,
+    maxLenght: 255,
+  },
+  messages: {
+    type: Schema.Types.ObjectId, 
+    ref: Message,
+    required: true,
+  },
+    
 });
 
 export const Chat = mongoose.model("Rating", ChatSchema);
