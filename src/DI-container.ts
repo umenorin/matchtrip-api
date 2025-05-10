@@ -37,7 +37,9 @@ container.register("ICategoryRepository", {
 container.register("IChatRepository", {
   useClass: ChatRepository,
 });
-
+container.register("IMatchRepository", {
+  useClass: MatchRepository,
+});
 
 // Registro de Services ta voando em
 container.register<IUserService>("IUserService", {
@@ -62,5 +64,9 @@ container.register<ICategoryService>("ICategoryService", {
 
 container.register<IChatService>("IChatService", {
   useClass: ChatService,
+});
+
+container.register<IMatchService>("IMatchService", {
+  useClass: MatchService,
 });
 export { container };
