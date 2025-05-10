@@ -27,6 +27,7 @@ export default class TravelController {
       startDate: travel.startDate, 
       endDate: travel.endDate, 
       limitTravelers: travel.travelLimit, 
+      owner: travel.owner,
     });
 
     try {

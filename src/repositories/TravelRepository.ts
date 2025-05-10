@@ -36,6 +36,7 @@ export class TravelRepository implements ITravelRepository {
         // Relationships
         rating: newRating._id,
         chat: newChat._id,
+        owner: newChat.owner
       });
     } catch (error) {
       console.error("Error creating travel:", error);
@@ -91,6 +92,7 @@ export class TravelRepository implements ITravelRepository {
 
       return new TravelDtoResponse({
         id: travel._id.toString(),
+        owner: travel.owner,
         name: travel.name,
         description: travel.description,
         country: travel.country,
@@ -149,6 +151,7 @@ export class TravelRepository implements ITravelRepository {
           new TravelDtoResponse({
             id: travel._id.toString(),
             name: travel.name,
+            owner:travel.owner,
             description: travel.description,
             country: travel.country,
             city: travel.city,

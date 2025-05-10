@@ -32,10 +32,12 @@ export default class UserController {
 
   public async sendProbavlyMatch(req: Request, res: Response) {
     try {
+      const userId = req.params.id;
       const { travel } = req.body;
+      const matchDto = this._matchService.createProbablyMatch(userId,travel.id)
       res.status(200).json({
         match: "you send the match with success",
-        content: newMatch,
+        content: matchDto,
       });
     } catch (error) {
       if (error instanceof CustomError) {

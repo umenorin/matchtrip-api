@@ -17,6 +17,9 @@ import { ICategoryService } from "./Interfaces/ICategoryService.js";
 import IChatService from "./Interfaces/IChatService.js";
 import { ChatService } from "./services/ChatService.js";
 import { ChatRepository } from "./repositories/ChatRepository.js";
+import IMatchService from "./Interfaces/IMatchService.js";
+import { MatchService } from "./services/MatchService.js";
+import { MatchRepository } from "./repositories/MatchRepository.js";
 
 // Registro de Repositórios parabens mano
 container.register("IUserRepository", {

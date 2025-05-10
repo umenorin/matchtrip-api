@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import { Schema } from "mongoose";
 import { Rating } from "./Rating.js";
 import { Chat } from "./Chat.js";
+import { User } from "./User.js";
 
 export const TravelSchema: Schema = new Schema(
   {
@@ -55,6 +56,11 @@ export const TravelSchema: Schema = new Schema(
     chat: {
       type: Schema.Types.ObjectId,
       ref: Chat,
+      required: true,
+    },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
       required: true,
     },
   },

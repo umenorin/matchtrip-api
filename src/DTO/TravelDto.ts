@@ -60,6 +60,7 @@ class TravelDtoResponse {
   id: string;
   name: string;
   description: string;
+  owner: string;
   country: string;
   city: string;
   latitude?: number;
@@ -85,6 +86,7 @@ class TravelDtoResponse {
   constructor({
     id,
     name,
+    owner,
     description,
     country,
     city,
@@ -100,6 +102,7 @@ class TravelDtoResponse {
   }: {
     id: string;
     name: string;
+    owner: string;
     description: string;
     country: string;
     city: string;
@@ -123,6 +126,7 @@ class TravelDtoResponse {
     createdAt: Date;
     updatedAt: Date;
   }) {
+    this.owner = owner;
     this.id = id;
     this.name = name;
     this.description = description;
