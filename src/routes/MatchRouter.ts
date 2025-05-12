@@ -26,4 +26,9 @@ matchRouter.post(
   matchControllerInstance.recuseMatch.bind(matchControllerInstance)
 );
 
+matchRouter.post(
+  "/acceptMatch/:id",
+  matchControllerInstance.acceptMatch.bind(matchControllerInstance)
+);
+
 export default matchRouter;

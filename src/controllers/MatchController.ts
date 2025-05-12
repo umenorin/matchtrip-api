@@ -78,7 +78,29 @@ export default class UserController {
       
       const matchsDto = await this._matchService.recuseMatch(userId,match.id)
       res.status(200).json({
-        match: "This is your match list by Traveler",
+        match: "This is your match info",
+        content: matchsDto,
+      });
+    } catch (error) {
+      if (error instanceof CustomError) {
+        console.error("Match create failed:", error.message);
+        res.status(error.statusHttp).json({ error: error.message });
+        return;
+      }
+      else{
+       res.status(341).json({error: error}) 
+      }
+    }
+  }
+
+  public async acceptMatch(req: Request, res: Response) {
+    try {
+      const userId = req.params.id;
+      const { match } = req.body;
+      
+      const matchsDto = await this._matchService.acceptMatch(userId,match.id)
+      res.status(200).json({
+        match: "This is your match info",
         content: matchsDto,
       });
     } catch (error) {

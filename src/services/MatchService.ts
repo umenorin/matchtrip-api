@@ -31,10 +31,10 @@ export class MatchService implements IMatchService {
     async recuseMatch(userId: string, matchId: string): Promise<MatchDto> {
         const matchDtoRecused = await this._matchRepository.recuseMatch(userId,matchId)
         return matchDtoRecused 
-        throw new Error("Method not implemented.");
     }
     
-    async acceptMatch(userId: string, matchId: string): Promise<boolean> {
-        throw new Error("Method not implemented.");
+    async acceptMatch(userId: string, matchId: string): Promise<MatchDto> {
+        const matchDtoAccept = await this._matchRepository.acceptMatch(userId,matchId)
+        return matchDtoAccept 
     }
 }
