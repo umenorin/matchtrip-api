@@ -13,8 +13,40 @@ export default class UserController {
   ) {
     this._matchService = matchService;
   }
-  public async getMatch(req: Request, res: Response) {
-    
+  public async getMatchByTraveler(req: Request, res: Response) {
+    try {
+      const userId = req.params.id
+  
+      const matchsDto = await this._matchService.getMatchbyTraveler(userId)
+      res.status(200).json({
+        match: "This is your match list by Traveler",
+        content: matchsDto,
+      });
+    } catch (error) {
+      if (error instanceof CustomError) {
+        console.error("Match create failed:", error.message);
+        res.status(error.statusHttp).json({ error: error.message });
+        return;
+      }
+    }
+  }
+
+  public async getMatchByTravel(req: Request, res: Response) {
+    try {
+      const travelId = req.params.id
+  
+      const matchsDto = await this._matchService.getMatchbyTravel(travelId)
+      res.status(200).json({
+        match: "This is your match list by Travel",
+        content: matchsDto,
+      });
+    } catch (error) {
+      if (error instanceof CustomError) {
+        console.error("Match create failed:", error.message);
+        res.status(error.statusHttp).json({ error: error.message });
+        return;
+      }
+    }
   }
 
   public async sendProbavlyMatch(req: Request, res: Response) {
@@ -36,9 +68,6 @@ export default class UserController {
     }
   }
 
-  public async deleteMatch(req: Request, res: Response) {
-     
-  }
 
   public async updateMatch(req: Request, res: Response) {
     

@@ -14,18 +14,21 @@ export class MatchService implements IMatchService {
   constructor(
     @inject("IMatchRepository") private _matchRepository: IMatchRepository
   ) {}
-    getMatchbyTraveler(id: string): Promise<MatchDto[] | null> {
-        throw new Error("Method not implemented.");
+    async getMatchbyTraveler(id: string): Promise<MatchDto[] | null> {
+        const matchDtoArrary:any = await this._matchRepository.getMatchbyTraveler(id);
+        return matchDtoArrary
     }
-    getMatchbyTravel(id: string): Promise<MatchDto[] | null> {
-        throw new Error("Method not implemented.");
+    async getMatchbyTravel(id: string): Promise<MatchDto[] | null> {
+        const matchDtoArrary:any = await this._matchRepository.getMatchbyTravel(id);
+        return matchDtoArrary
     }
     async createProbablyMatch(userId: string, travelId: string): Promise<MatchDto | null> {
         
         const matchDto = await this._matchRepository.createProbablyMatch(userId,travelId)
         return matchDto
     }
-    recuseMatch(userId: string, TravelId: string): boolean {
+    async recuseMatch(userId: string, TravelId: string): Promise<boolean> {
+        const isRecused = await this._matchRepository.recuseMatch(userId,TravelId)
         throw new Error("Method not implemented.");
     }
 

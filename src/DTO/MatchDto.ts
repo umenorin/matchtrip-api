@@ -3,20 +3,20 @@ import { User } from "../models/User.js";
 
 class MatchDto {
   id?: string;
-  travaler?: any;
+  traveler?: any;
   travel: any;
   
   constructor({
     id,
-    travaler,
+    traveler,
     travel
   }: {
     id?: string;
     travel: typeof Travel;
-    travaler: typeof User;
+    traveler: typeof User;
   }) {
     this.id = id;
-    this.travaler = travaler;
+    this.traveler = traveler;
     this.travel = travel;
   }
 }

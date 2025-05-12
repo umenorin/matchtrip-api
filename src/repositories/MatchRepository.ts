@@ -8,12 +8,45 @@ import { Match } from "../models/Match.js";
 
 @injectable()
 export class MatchRepository implements IMatchRepository {
-  getMatchbyTraveler(id: string): Promise<MatchDto[] | null> {
-    throw new Error("Method not implemented.");
+  async getMatchbyTraveler(id: string): Promise<MatchDto[] | null> {
+    const matchs: any = await Match.find({ traveler: id })
+      .populate("travel")
+      .populate("traveler")
+      .exec();
+    const matchsDto: MatchDto[] = [];
+
+    matchs.forEach((match: any) => {
+      matchsDto.push(
+        new MatchDto({
+          id: match.id,
+          traveler: match.traveler,
+          travel: match.travel,
+        })
+      );
+    });
+    
+    return matchsDto
   }
-  getMatchbyTravel(id: string): Promise<MatchDto[] | null> {
-    throw new Error("Method not implemented.");
+
+  async getMatchbyTravel(id: string): Promise<MatchDto[] | null> {
+    const matchs: any = await Match.find({ travel: id })
+      .populate("travel")
+      .populate("traveler")
+      .exec();
+    const matchsDto: MatchDto[] = [];
+    matchs.forEach((match: any) => {
+      matchsDto.push(
+        new MatchDto({
+          id: match.id,
+          traveler: match.traveler,
+          travel: match.travel,
+        })
+      );
+    });
+    
+    return matchsDto
   }
+
   async createProbablyMatch(
     userId: string,
     travelId: string
@@ -32,14 +65,15 @@ export class MatchRepository implements IMatchRepository {
       traveler: user,
     });
 
-    console.log("aaaaaaaaaaaa", match)
+    console.log("aaaaaaaaaaaa", match);
     const matchDto = new MatchDto({
       id: match._id,
       travel: match.travel,
-      travaler: match.traveler,
+      traveler: match.traveler,
     });
     return matchDto;
   }
+
   recuseMatch(userId: string, TravelId: string): boolean {
     throw new Error("Method not implemented.");
   }
