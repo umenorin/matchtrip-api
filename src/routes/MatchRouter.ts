@@ -20,4 +20,10 @@ matchRouter.get(
   "/matchsByTravel/:id",
   matchControllerInstance.getMatchByTravel.bind(matchControllerInstance)
 );
+
+matchRouter.post(
+  "/recuseMatch/:id",
+  matchControllerInstance.recuseMatch.bind(matchControllerInstance)
+);
+
 export default matchRouter;

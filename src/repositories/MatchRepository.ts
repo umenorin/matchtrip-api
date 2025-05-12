@@ -22,7 +22,7 @@ export class MatchRepository implements IMatchRepository {
           id: match.id,
           traveler: match.traveler,
           travel: match.travel,
-          status: match.status
+          status: match.status,
         })
       );
     });
@@ -42,7 +42,7 @@ export class MatchRepository implements IMatchRepository {
           id: match.id,
           traveler: match.traveler,
           travel: match.travel,
-          status: match.status
+          status: match.status,
         })
       );
     });
@@ -68,18 +68,35 @@ export class MatchRepository implements IMatchRepository {
       traveler: user,
     });
 
-    console.log("aaaaaaaaaaaa", match);
     const matchDto = new MatchDto({
       id: match._id,
       travel: match.travel,
       traveler: match.traveler,
-      status: MatchStatusEnum.PENDING
+      status: MatchStatusEnum.PENDING,
     });
     return matchDto;
   }
 
-  async recuseMatch(userId: string, matchId: string): Promise<boolean> {
-    throw new Error("Method not implemented.");
+  async recuseMatch(userId: string, matchId: string): Promise<MatchDto> {
+    const user: any = await User.findById(userId);
+    const match: any = await Match.findById(matchId).populate("travel");
+    
+    if (!user) throw new CustomError("User not found", 400);
+    if (!match) throw new CustomError("Match don't found", 400);
+    if (user._id.toString() !== match.travel.owner.toString())
+      throw new CustomError("You aren't the owner for recuse this match", 401);
+
+    match.status = MatchStatusEnum.REJECTED;
+    match.updatedAt = new Date();
+    console.log("seguraaaaaaaaaa")
+    const matchRecused = await match.save();
+    console.log("FOIIIIIIIIIIIIIIIIII")
+    return new MatchDto({
+      id: matchRecused._id,
+      traveler: matchRecused.traveler,
+      travel: matchRecused.travel,
+      status: matchRecused.status,
+    });
   }
 
   async acceptMatch(userId: string, matchId: string): Promise<boolean> {
