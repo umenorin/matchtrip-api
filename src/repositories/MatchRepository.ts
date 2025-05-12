@@ -24,8 +24,8 @@ export class MatchRepository implements IMatchRepository {
         })
       );
     });
-    
-    return matchsDto
+
+    return matchsDto;
   }
 
   async getMatchbyTravel(id: string): Promise<MatchDto[] | null> {
@@ -43,8 +43,8 @@ export class MatchRepository implements IMatchRepository {
         })
       );
     });
-    
-    return matchsDto
+
+    return matchsDto;
   }
 
   async createProbablyMatch(
@@ -74,7 +74,10 @@ export class MatchRepository implements IMatchRepository {
     return matchDto;
   }
 
-  recuseMatch(userId: string, TravelId: string): boolean {
+  async recuseMatch(userId: string, TravelId: string): Promise<boolean> {
+    throw new Error("Method not implemented.");
+  }
+  async acceptMatch(userId: string, TravelId: string): Promise<boolean> {
     throw new Error("Method not implemented.");
   }
 }

@@ -14,6 +14,7 @@ export class MatchService implements IMatchService {
   constructor(
     @inject("IMatchRepository") private _matchRepository: IMatchRepository
   ) {}
+    
     async getMatchbyTraveler(id: string): Promise<MatchDto[] | null> {
         const matchDtoArrary:any = await this._matchRepository.getMatchbyTraveler(id);
         return matchDtoArrary
@@ -31,6 +32,8 @@ export class MatchService implements IMatchService {
         const isRecused = await this._matchRepository.recuseMatch(userId,TravelId)
         throw new Error("Method not implemented.");
     }
-
- 
+    
+    async acceptMatch(userId: string, TravelId: string): Promise<boolean> {
+        throw new Error("Method not implemented.");
+    }
 }
