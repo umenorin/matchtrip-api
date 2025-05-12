@@ -28,12 +28,12 @@ export class MatchService implements IMatchService {
         const matchDto = await this._matchRepository.createProbablyMatch(userId,travelId)
         return matchDto
     }
-    async recuseMatch(userId: string, TravelId: string): Promise<boolean> {
+    async recuseMatch(userId: string, matchId: string): Promise<boolean> {
         const isRecused = await this._matchRepository.recuseMatch(userId,TravelId)
         throw new Error("Method not implemented.");
     }
     
-    async acceptMatch(userId: string, TravelId: string): Promise<boolean> {
+    async acceptMatch(userId: string, matchId: string): Promise<boolean> {
         throw new Error("Method not implemented.");
     }
 }

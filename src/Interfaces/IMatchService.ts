@@ -5,8 +5,8 @@ interface IMatchService {
   getMatchbyTraveler(id: string): Promise<MatchDto[] | null>;
   getMatchbyTravel(id: string): Promise<MatchDto[] | null>;
   createProbablyMatch(usedId:string,TravelId:string) :Promise<MatchDto | null>;
-  recuseMatch(userId:string,TravelId:string): Promise<boolean>
-  acceptMatch(userId:string,TravelId:string): Promise<boolean>
+  recuseMatch(userId:string,matchId:string): Promise<boolean>
+  acceptMatch(userId:string,matchId:string): Promise<boolean>
 }
 
 
