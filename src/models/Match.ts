@@ -4,12 +4,12 @@ import { Schema } from "mongoose";
 
 const MatchSchema: Schema = new Schema(
   {
-    content: {
-      type: String,
+    travel: {
+      type: Schema.Types.ObjectId,
       ref:"Travel",
       required:true
     },
-    owner: {
+    traveler: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
