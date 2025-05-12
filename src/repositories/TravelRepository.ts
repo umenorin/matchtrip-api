@@ -5,6 +5,7 @@ import { Rating } from "../models/Rating.js";
 import { Travel } from "../models/Travel.js";
 import { CustomError } from "../errors/CustomError.js";
 import { Chat } from "../models/Chat.js";
+import { User } from "../models/User.js";
 
 @injectable()
 export class TravelRepository implements ITravelRepository {
@@ -13,7 +14,11 @@ export class TravelRepository implements ITravelRepository {
       // 1. Primeiro cria o Rating
       const newRating = await Rating.create({ ratings: [] });
       const newChat = await Chat.create({ messages: [] });
-
+      const user = await User.findById(travelDto.owner)
+      if(!user){
+        throw new CustomError("user doesn't exist",400)
+      }
+      console.log("Travel dto :",travelDto)
       // 2. Depois cria o Travel com a referência
       await Travel.create({
         // Basic info (original Travel fields)
@@ -36,7 +41,7 @@ export class TravelRepository implements ITravelRepository {
         // Relationships
         rating: newRating._id,
         chat: newChat._id,
-        owner: newChat.owner
+        owner: user
       });
     } catch (error) {
       console.error("Error creating travel:", error);

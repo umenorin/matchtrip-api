@@ -10,6 +10,7 @@ class TravelDtoRequest {
   longitude?: number;
   startDate?: Date;
   endDate?: Date;
+  owner?: string;
   limitTravelers?: number;
   ratingId?: Types.ObjectId;
   chatId?: Types.ObjectId;
@@ -18,6 +19,7 @@ class TravelDtoRequest {
     id,
     name,
     description,
+    owner,
     country,
     city,
     latitude,
@@ -38,6 +40,7 @@ class TravelDtoRequest {
     startDate?: Date;
     endDate?: Date;
     limitTravelers?: number;
+    owner?: string;
     ratingId?: Types.ObjectId;
     chatId?: Types.ObjectId;
   }) {
@@ -51,6 +54,7 @@ class TravelDtoRequest {
     this.startDate = startDate;
     this.endDate = endDate;
     this.limitTravelers = limitTravelers;
+    this.owner = owner;
     this.ratingId = ratingId;
     this.chatId = chatId;
   }
@@ -60,7 +64,10 @@ class TravelDtoResponse {
   id: string;
   name: string;
   description: string;
-  owner: string;
+  owner: {
+    id: Types.ObjectId;
+    name: string;
+  };
   country: string;
   city: string;
   latitude?: number;
@@ -102,7 +109,10 @@ class TravelDtoResponse {
   }: {
     id: string;
     name: string;
-    owner: string;
+    owner: {
+      id: Types.ObjectId;
+      name:string
+    };
     description: string;
     country: string;
     city: string;
