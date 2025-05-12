@@ -5,6 +5,7 @@ import MatchDto from "../DTO/MatchDto.js";
 import { Travel } from "../models/Travel.js";
 import { User } from "../models/User.js";
 import { Match } from "../models/Match.js";
+import MatchStatusEnum from "../Enums/MatchStatusEnum.js";
 
 @injectable()
 export class MatchRepository implements IMatchRepository {
@@ -21,6 +22,7 @@ export class MatchRepository implements IMatchRepository {
           id: match.id,
           traveler: match.traveler,
           travel: match.travel,
+          status: match.status
         })
       );
     });
@@ -40,6 +42,7 @@ export class MatchRepository implements IMatchRepository {
           id: match.id,
           traveler: match.traveler,
           travel: match.travel,
+          status: match.status
         })
       );
     });
@@ -70,6 +73,7 @@ export class MatchRepository implements IMatchRepository {
       id: match._id,
       travel: match.travel,
       traveler: match.traveler,
+      status: MatchStatusEnum.PENDING
     });
     return matchDto;
   }
@@ -77,6 +81,7 @@ export class MatchRepository implements IMatchRepository {
   async recuseMatch(userId: string, TravelId: string): Promise<boolean> {
     throw new Error("Method not implemented.");
   }
+
   async acceptMatch(userId: string, TravelId: string): Promise<boolean> {
     throw new Error("Method not implemented.");
   }
