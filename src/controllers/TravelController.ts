@@ -96,7 +96,7 @@ export default class TravelController {
     const { travel } = req.body;
     console.log("params ",req.params)
     try {
-      const travelDto = await this._travelService.getTravel(travel.id);
+      const travelDto = await this._travelService.getTravel(req.params.id);
       res.status(201).json({
         message: "Travel deleted with sucess",
         travel: travelDto,
@@ -131,7 +131,7 @@ export default class TravelController {
       return;
     } catch (error) {
       if (error instanceof CustomError) {
-        console.error("Travel delete failed:", error.message);
+        console.error("Travel getManyTravels failed:", error.message);
         res.status(error.statusHttp).json({ error: error.message });
         return;
       }

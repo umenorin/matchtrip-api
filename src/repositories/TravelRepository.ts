@@ -6,6 +6,7 @@ import { Travel } from "../models/Travel.js";
 import { CustomError } from "../errors/CustomError.js";
 import { Chat } from "../models/Chat.js";
 import { User } from "../models/User.js";
+import { GroupTravalers } from "../models/GroupTravalers.js";
 
 @injectable()
 export class TravelRepository implements ITravelRepository {
@@ -14,11 +15,11 @@ export class TravelRepository implements ITravelRepository {
       // 1. Primeiro cria o Rating
       const newRating = await Rating.create({ ratings: [] });
       const newChat = await Chat.create({ messages: [] });
-      const user = await User.findById(travelDto.owner)
-      if(!user){
-        throw new CustomError("user doesn't exist",400)
+      const user = await User.findById(travelDto.owner);
+      if (!user) {
+        throw new CustomError("user doesn't exist", 400);
       }
-      console.log("Travel dto :",travelDto)
+      console.log("Travel dto :", travelDto);
       // 2. Depois cria o Travel com a referência
       await Travel.create({
         // Basic info (original Travel fields)
@@ -41,7 +42,7 @@ export class TravelRepository implements ITravelRepository {
         // Relationships
         rating: newRating._id,
         chat: newChat._id,
-        owner: user
+        owner: user,
       });
     } catch (error) {
       console.error("Error creating travel:", error);
@@ -95,6 +96,13 @@ export class TravelRepository implements ITravelRepository {
         throw new CustomError("Travel don't found", 400);
       }
 
+      const travelers: any = await GroupTravalers.find({
+        travel: travel._id.toString(),
+      }).populate({
+        path: "traveler",
+        select: "-password", // Isso exclui o campo 'password' do resultado
+      });
+
       return new TravelDtoResponse({
         id: travel._id.toString(),
         owner: travel.owner,
@@ -122,6 +130,7 @@ export class TravelRepository implements ITravelRepository {
         },
         createdAt: travel.createdAt,
         updatedAt: travel.updatedAt,
+        travalers: travelers,
       });
     } catch (error: any) {
       console.log(error);
@@ -143,7 +152,7 @@ export class TravelRepository implements ITravelRepository {
           },
         })
         .exec();
-      console.log("travels", allTravels);
+
       const shuffledTravels = allTravels.sort(() => 0.5 - Math.random());
       const selectedTravels = shuffledTravels.slice(0, maxTravels);
       const travelDtoarray: TravelDtoResponse[] = [];
@@ -151,38 +160,52 @@ export class TravelRepository implements ITravelRepository {
         throw new CustomError("Travels don't found", 400);
       }
 
-      selectedTravels.forEach((travel: any) => {
-        travelDtoarray.push(
-          new TravelDtoResponse({
-            id: travel._id.toString(),
-            name: travel.name,
-            owner:travel.owner,
-            description: travel.description,
-            country: travel.country,
-            city: travel.city,
-            latitude: travel.latitude,
-            longitude: travel.longitude,
-            startDate: travel.startDate,
-            endDate: travel.endDate,
-            limitTravelers: travel.limitTravelers,
-            rating: {
-              id: travel.rating._id,
-              averageScore: travel.rating.averageRating, // Assuming this exists
-              userRatings:
-                travel.rating.ratings?.map((r: any) => ({
-                  userId: r.userId.toString(), // Changed from travelerOfUser to userId for consistency
-                  score: r.score,
-                })) || [],
-            },
-            chat: {
-              id: travel.chat._id,
-              messageCount: travel.chat.messages?.length || 0, // Assuming messages array exists
-            },
-            createdAt: travel.createdAt,
-            updatedAt: travel.updatedAt,
-          })
-        );
-      });
+      await Promise.all(
+        selectedTravels.map(async (travel: any) => {
+          if (!travel) return; // Se travel for null/undefined, pula para a próxima iteração
+
+          console.log("Processando viagem:", travel._id?.toString());
+
+          const travelers:any = await GroupTravalers.find({
+            travel: travel._id?.toString(),
+          }).populate({
+            path: "traveler",
+            select: "-password",
+          });
+
+          travelDtoarray.push(
+            new TravelDtoResponse({
+              id: travel._id?.toString(),
+              name: travel.name,
+              owner: travel.owner,
+              description: travel.description,
+              country: travel.country,
+              city: travel.city,
+              latitude: travel.latitude,
+              longitude: travel.longitude,
+              startDate: travel.startDate,
+              endDate: travel.endDate,
+              limitTravelers: travel.limitTravelers,
+              rating: {
+                id: travel.rating?._id || null, // Se rating for null, define id como null
+                averageScore: travel.rating?.averageRating || 0, // Se não existir, usa 0
+                userRatings:
+                  travel.rating?.ratings?.map((r: any) => ({
+                    userId: r.userId?.toString(),
+                    score: r.score,
+                  })) || [],
+              },
+              chat: {
+                id: travel.chat?._id || null, // Se chat for null, define id como null
+                messageCount: travel.chat?.messages?.length || 0,
+              },
+              createdAt: travel.createdAt,
+              updatedAt: travel.updatedAt,
+              travalers: travelers || [], // Se travelers for null/undefined, usa array vazio
+            })
+          );
+        })
+      );
 
       return travelDtoarray;
     } catch (error: any) {

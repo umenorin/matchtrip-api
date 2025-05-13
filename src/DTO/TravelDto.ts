@@ -87,6 +87,7 @@ class TravelDtoResponse {
     id: Types.ObjectId;
     messageCount?: number;
   };
+  travalers:string[];
   createdAt: Date;
   updatedAt: Date;
 
@@ -106,6 +107,7 @@ class TravelDtoResponse {
     chat,
     createdAt,
     updatedAt,
+    travalers,
   }: {
     id: string;
     name: string;
@@ -133,6 +135,7 @@ class TravelDtoResponse {
       id: Types.ObjectId;
       messageCount?: number;
     };
+    travalers:string[];
     createdAt: Date;
     updatedAt: Date;
   }) {
@@ -151,6 +154,7 @@ class TravelDtoResponse {
     this.chat = chat;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
+    this.travalers = travalers;
   }
 }
 export { TravelDtoRequest, TravelDtoResponse };

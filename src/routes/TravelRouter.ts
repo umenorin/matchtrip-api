@@ -21,7 +21,7 @@ travelRouter.delete(
 );
 
 travelRouter.get(
-  "/",
+  "/getTravel/:id",
   travelRouterInstance.getTravel.bind(travelRouterInstance)
 );
 
