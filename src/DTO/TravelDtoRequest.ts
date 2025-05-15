@@ -61,4 +61,4 @@ class TravelDtoRequest {
 }
 
 
-export { TravelDtoRequest };
+export default TravelDtoRequest;

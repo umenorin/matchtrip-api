@@ -1,10 +1,8 @@
 import { inject, injectable } from "tsyringe";
-import {
-  TravelDtoRequest,
-  TravelDtoResponse,
-} from "../DTO/TravelDtoRequest.js";
+import TravelDtoRequest from "../DTO/TravelDtoRequest.js";
 import ITravelRepository from "../Interfaces/ITravelRepository.js";
 import ITravelSevice from "../Interfaces/ITravelService.js";
+import TravelDtoResponse from "../DTO/TravelDtoResponse.js";
 
 @injectable()
 export class TravelService implements ITravelSevice {
@@ -15,7 +13,6 @@ export class TravelService implements ITravelSevice {
   ) {
     this._travelRepository = travelRepository;
   }
-
   async createTravel(travelDto: TravelDtoRequest): Promise<void> {
     await this._travelRepository.register(travelDto);
   }
@@ -27,7 +24,6 @@ export class TravelService implements ITravelSevice {
   async editTravel(travel: TravelDtoRequest): Promise<void> {
     await this._travelRepository.editTravel(travel);
   }
-
   async getTravel(travelId: string): Promise<TravelDtoResponse> {
     return await this._travelRepository.getTravel(travelId);
   }
