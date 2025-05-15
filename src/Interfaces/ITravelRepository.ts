@@ -1,4 +1,7 @@
-import {TravelDtoRequest,TravelDtoResponse} from "../DTO/TravelDto.js";
+import {
+  TravelDtoRequest,
+  TravelDtoResponse,
+} from "../DTO/TravelDtoRequest.js";
 
 interface ITravelRepository {
   register(travelDto: TravelDtoRequest): void;

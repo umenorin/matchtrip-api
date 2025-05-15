@@ -1,5 +1,8 @@
 import { inject, injectable } from "tsyringe";
-import {TravelDtoRequest, TravelDtoResponse} from "../DTO/TravelDto.js";
+import {
+  TravelDtoRequest,
+  TravelDtoResponse,
+} from "../DTO/TravelDtoRequest.js";
 import ITravelRepository from "../Interfaces/ITravelRepository.js";
 import ITravelSevice from "../Interfaces/ITravelService.js";
 

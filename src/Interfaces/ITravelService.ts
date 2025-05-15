@@ -1,4 +1,4 @@
-import TravelDto from "../DTO/TravelDto.js";
+import TravelDto from "../DTO/TravelDtoRequest.js";
 
 interface ITravelSevice {
   createTravel(travelDto: TravelDto): void;

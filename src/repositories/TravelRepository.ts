@@ -1,5 +1,5 @@
 import { injectable } from "tsyringe";
-import { TravelDtoRequest, TravelDtoResponse } from "../DTO/TravelDto.js";
+import { TravelDtoRequest } from "../DTO/TravelDtoRequest.js";
 import ITravelRepository from "../Interfaces/ITravelRepository.js";
 import { Rating } from "../models/Rating.js";
 import { Travel } from "../models/Travel.js";
@@ -7,6 +7,7 @@ import { CustomError } from "../errors/CustomError.js";
 import { Chat } from "../models/Chat.js";
 import { User } from "../models/User.js";
 import { GroupTravalers } from "../models/GroupTravalers.js";
+import TravelDtoResponse from "../DTO/TravelDtoResponse.js";
 
 @injectable()
 export class TravelRepository implements ITravelRepository {
@@ -166,7 +167,7 @@ export class TravelRepository implements ITravelRepository {
 
           console.log("Processando viagem:", travel._id?.toString());
 
-          const travelers:any = await GroupTravalers.find({
+          const travelers: any = await GroupTravalers.find({
             travel: travel._id?.toString(),
           }).populate({
             path: "traveler",
