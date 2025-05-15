@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 import ITravelService from "../Interfaces/ITravelService.js";
 import { Request, Response } from "express";
-import { TravelDtoRequest } from "../DTO/TravelDtoRequest.js";
+import  TravelDtoRequest from "../DTO/TravelDtoRequest.js";
 import { CustomError } from "../errors/CustomError.js";
 import TravelDtoResponse from "../DTO/TravelDtoResponse.js";
 
