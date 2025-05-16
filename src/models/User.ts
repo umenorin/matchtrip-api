@@ -42,6 +42,10 @@ const UserSchema: Schema = new Schema({
   },
   rating: [RatingSchema],
   Travels: [TravelSchema],
+  profileImage: {
+    type: String,
+    default: ""
+  }
 });
 
 export const User = mongoose.model("User", UserSchema);

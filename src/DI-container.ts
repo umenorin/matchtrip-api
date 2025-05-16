@@ -20,6 +20,8 @@ import { ChatRepository } from "./repositories/ChatRepository.js";
 import IMatchService from "./Interfaces/IMatchService.js";
 import { MatchService } from "./services/MatchService.js";
 import { MatchRepository } from "./repositories/MatchRepository.js";
+import { UploadService } from "./services/UploadService.js";
+import { UploadController } from "./controllers/UploadController.js";
 
 // Registro de Repositórios parabens mano
 container.register("IUserRepository", {
@@ -71,5 +73,13 @@ container.register<IChatService>("IChatService", {
 
 container.register<IMatchService>("IMatchService", {
   useClass: MatchService,
+});
+
+container.register("UploadService", {
+  useClass: UploadService
+});
+
+container.register("UploadController", {
+  useClass: UploadController
 });
 export { container };

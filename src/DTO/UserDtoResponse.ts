@@ -15,6 +15,7 @@ class UserDtoResponse {
   gender: string;
   rating?: any;
   travels?: any;
+  profileImage: any;
 
   constructor({
     id,
@@ -25,6 +26,7 @@ class UserDtoResponse {
     numberPhone,
     nationality,
     gender,
+    profileImage,
   }: {
     id: string;
     email: string;
@@ -34,6 +36,7 @@ class UserDtoResponse {
     age: number;
     nationality: string;
     gender: string;
+    profileImage: any;
   }) {
     this.id = id;
     this.email = email;
@@ -45,6 +48,7 @@ class UserDtoResponse {
     this.gender = gender;
     this.rating = new Rating();
     this.travels = new Array<typeof Travel>();
+    this.profileImage = profileImage;
   }
 }
 
