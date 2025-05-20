@@ -26,7 +26,7 @@ function CPFTest(strCPF: string) {
 export const userValidator = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const phoneRegex =
@@ -36,9 +36,10 @@ export const userValidator = (
   const cpfRegex = /^\d{3}\.?\d{3}\.?\d{3}-?\d{2}$/;
 
   const invalidMessages = [];
-
-  const { user } = req.body;
-  console.log(req.body);
+  const user =
+    typeof req.body.user === "string"
+      ? JSON.parse(req.body.user)
+      : req.body.user;
   if (!user) {
     res.status(400).json({
       message: "User data is missing in the request body.",
@@ -64,12 +65,12 @@ export const userValidator = (
   } else {
     if (!passwordRegex.test(user.password)) {
       invalidMessages.push(
-        "The password must contain at least one uppercase letter, one lowercase letter, one number, and one special character."
+        "The password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
       );
     }
     if (user.password.length < 6 || user.password.length > 16) {
       invalidMessages.push(
-        "The password must be between 6 and 16 characters long."
+        "The password must be between 6 and 16 characters long.",
       );
     }
   }

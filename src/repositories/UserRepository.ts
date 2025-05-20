@@ -11,7 +11,7 @@ import { Types } from "mongoose";
 class UserRepository implements IUserRepository {
   async findUserExist(
     email: string,
-    uniqueIdentification: string
+    uniqueIdentification: string,
   ): Promise<boolean> {
     const userEmail = await User.findOne({ email: email });
     const userUniqueIdentification = await User.findOne({
@@ -30,7 +30,7 @@ class UserRepository implements IUserRepository {
       : 10;
     const hashPassword = await bcrypt.hash(user.password, hash);
     console.log("hashPassword: ", hashPassword);
-    await User.create({
+    const newUser = await User.create({
       name: user.name,
       password: hashPassword,
       email: user.email,
@@ -39,7 +39,10 @@ class UserRepository implements IUserRepository {
       uniqueIdentification: user.uniqueIdentification,
       nationality: user.nationality,
       gender: user.gender,
+      profileImage: `/uploads/avatars/${user.profileImage}`,
     });
+
+    return newUser;
   }
 
   async getById(id: string): Promise<UserDtoResponse | null> {
@@ -55,8 +58,7 @@ class UserRepository implements IUserRepository {
         age: user.age as number,
         nationality: user.nationality as string,
         gender: user.gender as string,
-        rating: user.rating,
-        travels: user.travels,
+        profileImage: user.profileImage,
       };
       return userDtoResponse;
     }
@@ -70,13 +72,16 @@ class UserRepository implements IUserRepository {
 
   getByUniqueIdentificator(uniqueIdentificator: string): UserDto {
     throw new Error("Method not implemented.");
- }
+  }
 
-async update(id: string, userData: Partial<UserDtoRequest>): Promise<UserDtoResponse> {
+  async update(
+    id: string,
+    userData: Partial<UserDtoRequest>,
+  ): Promise<UserDtoResponse> {
     const updatedUser = await User.findByIdAndUpdate(
       id,
       { $set: userData },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     );
 
     if (!updatedUser) {
@@ -92,25 +97,24 @@ async update(id: string, userData: Partial<UserDtoRequest>): Promise<UserDtoResp
       age: updatedUser.age as number,
       nationality: updatedUser.nationality as string,
       gender: updatedUser.gender as string,
-      rating: updatedUser.rating,
-      travels: updatedUser.travels
+      profileImage: updatedUser.profileImage
     };
   }
 
-async delete(id: string): Promise<void> {
-  // Validação do ID
-  if (!Types.ObjectId.isValid(id)) {
-    throw new Error("ID de usuário inválido");
-  }
+  async delete(id: string): Promise<void> {
+    // Validação do ID
+    if (!Types.ObjectId.isValid(id)) {
+      throw new Error("ID de usuário inválido");
+    }
 
-  // Operação de deleção
-  const deletedUser = await User.findByIdAndDelete(id);
+    // Operação de deleção
+    const deletedUser = await User.findByIdAndDelete(id);
 
-  // Verificação corrigida
-  if (!deletedUser) {
-    throw new Error(`Usuário com ID ${id} não encontrado`);
+    // Verificação corrigida
+    if (!deletedUser) {
+      throw new Error(`Usuário com ID ${id} não encontrado`);
+    }
   }
- }
 }
 
 export default UserRepository;

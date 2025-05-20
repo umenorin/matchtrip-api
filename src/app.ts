@@ -6,11 +6,17 @@ import "dotenv/config";
 import router from "./routes/IndexRouter.js";
 import mongoosedb from "./database/MongoDbMongoose.js";
 import cors from "cors";
+import path from "path";
 
+import { dirname } from "path";
+import { fileURLToPath } from "url";
 const app = express();
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 // Initializing the database
 mongoosedb();
+app.use("/uploads", express.static(path.resolve(__dirname, "..", "uploads")));
 
 app.use(
   cors({
@@ -20,7 +26,7 @@ app.use(
     credentials: true,
   })
 );
-
+app.use(express.static('public'))
 app.use(express.json());
 
 // This route, serve just for text the backend is running correctly

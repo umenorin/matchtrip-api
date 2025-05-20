@@ -15,13 +15,13 @@ class UserService implements IUserService {
     this._userRepository = userRepository;
   }
 
-  async createUser(user: UserDtoRequest): Promise<void> {
+  async createUser(user: UserDtoRequest): Promise<UserDtoResponse> {
     let verifyUserExist = false;
 
     if (user.email && user.uniqueIdentification) {
       verifyUserExist = await this._userRepository.findUserExist(
         user.email,
-        user.uniqueIdentification
+        user.uniqueIdentification,
       );
     }
 
@@ -29,36 +29,41 @@ class UserService implements IUserService {
       throw new CustomError("Email or Unique Identification already used", 405);
     }
 
-    await this._userRepository.register(user);
+    return await this._userRepository.register(user);
   }
 
   async login(user: UserDtoRequest): Promise<UserDtoResponse> {
-    const _user = await User.findOne({ email: user.email });
-    console.log(_user);
+    try {
+      const _user = await User.findOne({ email: user.email });
+      console.log(_user);
 
-    if (!_user) {
-      throw new Error("Credenciais inválidas user");
+      if (!_user) {
+        throw new Error("Credenciais inválidas user");
+      }
+
+      const isPasswordValid = bcrypt.compareSync(
+        user.password,
+        _user.password as string,
+      );
+
+      if (!isPasswordValid) {
+        throw new CustomError("Credenciais inválidas senha", 400);
+      }
+
+      return new UserDtoResponse({
+        id: _user.id as string,
+        email: _user.email as string,
+        name: _user.name as string,
+        numberPhone: _user.numberPhone as string,
+        uniqueIdentification: _user.uniqueIdentification as string,
+        age: _user.age as number,
+        nationality: _user.nationality as string,
+        gender: _user.gender as string,
+        profileImage: _user.profileImage,
+      });
+    } catch(error:any){
+      throw new CustomError(error.message,400)
     }
-
-    const isPasswordValid = bcrypt.compareSync(
-      user.password,
-      _user.password as string
-    );
-
-    if (!isPasswordValid) {
-      throw new Error("Credenciais inválidas senha");
-    }
-
-    return new UserDtoResponse({
-      id: _user.id as string,
-      email: _user.email as string,
-      name: _user.name as string,
-      numberPhone: _user.numberPhone as string,
-      uniqueIdentification: _user.uniqueIdentification as string,
-      age: _user.age as number,
-      nationality: _user.nationality as string,
-      gender: _user.gender as string,
-    });
   }
 
   deleteUser(id: string): void {
@@ -71,7 +76,7 @@ class UserService implements IUserService {
 
   async editUser(
     id: string,
-    userData: UserDtoRequest
+    userData: UserDtoRequest,
   ): Promise<UserDtoResponse> {
     const existingUser = await this._userRepository.getById(id);
     if (!existingUser) throw new CustomError("User not Found", 404);
@@ -97,28 +102,20 @@ class UserService implements IUserService {
       age: updatedUser.age,
       nationality: updatedUser.nationality,
       gender: updatedUser.gender,
+      profileImage: updatedUser.profileImage,
     });
   }
 
-  async getUser(user: UserDtoRequest): Promise<UserDtoResponse> {
-    const _user = await User.findOne({ email: user.email });
-    console.log(_user);
+  async getUser(user: string): Promise<UserDtoResponse> {
+    const _user: any = await User.findById(user);
+    console.log(user);
 
-    if (!_user) {
+    if (!user) {
       throw new Error("Credenciais inválidas user");
     }
 
-    const isPasswordValid = bcrypt.compareSync(
-      user.password,
-      _user.password as string
-    );
-
-    if (!isPasswordValid) {
-      throw new Error("Credenciais inválidas senha");
-    }
-
     return new UserDtoResponse({
-      id: _user.id as string,
+      id: _user._id as string,
       email: _user.email as string,
       name: _user.name as string,
       numberPhone: _user.numberPhone as string,
@@ -126,6 +123,7 @@ class UserService implements IUserService {
       age: _user.age as number,
       nationality: _user.nationality as string,
       gender: _user.gender as string,
+      profileImage: _user.profileImage,
     });
   }
 }

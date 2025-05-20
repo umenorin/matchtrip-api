@@ -16,7 +16,7 @@ class UserDtoRequest {
   gender: string;
   rating?: any;
   travels?: any;
-  profileImage: any;
+  profileImage?: any;
 
   constructor({
     id,
@@ -43,7 +43,7 @@ class UserDtoRequest {
     gender: string;
     rating: typeof Rating;
     travels: typeof Array<typeof Travel>;
-    profileImage: any;
+    profileImage?: any;
   }) {
     this.id = id;
     this.email = email;
