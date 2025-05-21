@@ -72,4 +72,5 @@ container.register<IChatService>("IChatService", {
 container.register<IMatchService>("IMatchService", {
   useClass: MatchService,
 });
+
 export { container };

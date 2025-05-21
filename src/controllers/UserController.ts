@@ -9,21 +9,25 @@ export default class UserController {
   private readonly _userService: IUserService;
   public constructor(
     @inject("IUserService")
-    userService: IUserService
+    userService: IUserService,
   ) {
     this._userService = userService;
   }
 
   public async postUser(req: Request, res: Response) {
     try {
-      const { user } = req.body;
+      const user =
+        typeof req.body.user === "string"
+          ? JSON.parse(req.body.user)
+          : req.body.user;
       console.log("user: ", user);
       const userDto = new UserDtoRequest(user);
-
-      await this._userService.createUser(userDto);
+      userDto.profileImage = req.file ? req.file.filename : null;
+      console.log(userDto.profileImage);
+      const newUser = await this._userService.createUser(userDto);
       res.status(200).json({
         message: "sucessful",
-        body: user,
+        body: newUser,
       });
     } catch (error: any) {
       if (error instanceof CustomError) {
@@ -58,9 +62,9 @@ export default class UserController {
 
   public async getUser(req: Request, res: Response) {
     try {
-      const { user } = req.body;
-      const userDto = new UserDtoRequest(user);
-      const userResponse = await this._userService.getUser(userDto);
+      const user = req.params.id;
+      console.log(user)
+      const userResponse = await this._userService.getUser(user);
       res.status(200).json({
         message: "Success!",
         token: userResponse,

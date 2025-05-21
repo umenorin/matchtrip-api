@@ -1,6 +1,5 @@
 import { Types } from "mongoose";
 
-
 export default class TravelDtoResponse {
   id: string;
   name: string;
@@ -28,10 +27,10 @@ export default class TravelDtoResponse {
     id: Types.ObjectId;
     messageCount?: number;
   };
-  travalers:string[];
+  travalers: string[];
   createdAt: Date;
   updatedAt: Date;
-
+  imageTravel?: any;
   constructor({
     id,
     name,
@@ -49,12 +48,13 @@ export default class TravelDtoResponse {
     createdAt,
     updatedAt,
     travalers,
+    imageTravel,
   }: {
     id: string;
     name: string;
     owner: {
       id: Types.ObjectId;
-      name:string
+      name: string;
     };
     description: string;
     country: string;
@@ -76,9 +76,10 @@ export default class TravelDtoResponse {
       id: Types.ObjectId;
       messageCount?: number;
     };
-    travalers:string[];
+    travalers: string[];
     createdAt: Date;
     updatedAt: Date;
+    imageTravel?: any;
   }) {
     this.owner = owner;
     this.id = id;
@@ -96,5 +97,6 @@ export default class TravelDtoResponse {
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.travalers = travalers;
+    this.imageTravel = imageTravel;
   }
 }

@@ -32,6 +32,7 @@ export class TravelRepository implements ITravelRepository {
         city: travelDto.city,
         latitude: travelDto.latitude,
         longitude: travelDto.longitude,
+        imageTravel: travelDto.imageTravel,
 
         // Dates (original Travel fields)
         startDate: travelDto.startDate,
@@ -71,7 +72,8 @@ export class TravelRepository implements ITravelRepository {
           longitude: travel.longitude,
           city: travel.city,
           country: travel.country,
-        }
+          imageTravel: travel.imageTravel,
+        },
       ).lean();
     } catch (error: any) {
       console.log(error);
@@ -116,6 +118,7 @@ export class TravelRepository implements ITravelRepository {
         startDate: travel.startDate,
         endDate: travel.endDate,
         limitTravelers: travel.limitTravelers,
+        imageTravel: travel.imageTravel,
         rating: {
           id: travel.rating._id,
           averageScore: travel.rating.averageRating, // Assuming this exists
@@ -186,6 +189,7 @@ export class TravelRepository implements ITravelRepository {
               longitude: travel.longitude,
               startDate: travel.startDate,
               endDate: travel.endDate,
+              imageTravel: travel.imageTravel,
               limitTravelers: travel.limitTravelers,
               rating: {
                 id: travel.rating?._id || null, // Se rating for null, define id como null
@@ -203,9 +207,9 @@ export class TravelRepository implements ITravelRepository {
               createdAt: travel.createdAt,
               updatedAt: travel.updatedAt,
               travalers: travelers || [], // Se travelers for null/undefined, usa array vazio
-            })
+            }),
           );
-        })
+        }),
       );
 
       return travelDtoarray;

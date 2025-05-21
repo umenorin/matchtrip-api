@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 import ITravelService from "../Interfaces/ITravelService.js";
 import { Request, Response } from "express";
-import  TravelDtoRequest from "../DTO/TravelDtoRequest.js";
+import TravelDtoRequest from "../DTO/TravelDtoRequest.js";
 import { CustomError } from "../errors/CustomError.js";
 import TravelDtoResponse from "../DTO/TravelDtoResponse.js";
 
@@ -11,27 +11,33 @@ export default class TravelController {
 
   public constructor(
     @inject("ITravelService")
-    travelService: ITravelService
+    travelService: ITravelService,
   ) {
     this._travelService = travelService;
   }
 
   public async postTravel(req: Request, res: Response) {
-    const { travel } = req.body;
-    const travelDto = new TravelDtoRequest({
-      name: travel.name,
-      description: travel.description,
-      latitude: travel.latitude,
-      longitude: travel.longitude,
-      city: travel.city,
-      country: travel.country,
-      startDate: travel.startDate,
-      endDate: travel.endDate,
-      limitTravelers: travel.travelLimit,
-      owner: travel.owner,
-    });
-
     try {
+      const travel =
+        typeof req.body.travel === "string"
+          ? JSON.parse(req.body.travel)
+          : req.body.travel;
+      console.log("travel: ", travel);
+
+      const travelDto = new TravelDtoRequest({
+        name: travel.name,
+        description: travel.description,
+        latitude: travel.latitude,
+        longitude: travel.longitude,
+        city: travel.city,
+        country: travel.country,
+        startDate: travel.startDate,
+        endDate: travel.endDate,
+        limitTravelers: travel.travelLimit,
+        owner: travel.owner,
+        imageTravel: travel.imageTravel,
+      });
+
       await this._travelService.createTravel(travelDto);
       res.status(201).json({
         travel: travelDto,

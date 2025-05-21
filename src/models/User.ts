@@ -40,8 +40,10 @@ const UserSchema: Schema = new Schema({
     require: true,
     maxlength: 255,
   },
-  rating: [RatingSchema],
-  Travels: [TravelSchema],
+  profileImage: {
+    type: String,
+    allowNull: true,
+  },
 });
 
 export const User = mongoose.model("User", UserSchema);

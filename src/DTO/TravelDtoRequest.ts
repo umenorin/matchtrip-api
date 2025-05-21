@@ -14,7 +14,7 @@ class TravelDtoRequest {
   limitTravelers?: number;
   ratingId?: Types.ObjectId;
   chatId?: Types.ObjectId;
-
+  imageTravel: any;
   constructor({
     id,
     name,
@@ -29,6 +29,7 @@ class TravelDtoRequest {
     limitTravelers,
     ratingId,
     chatId,
+    imageTravel,
   }: {
     id?: string;
     name: string;
@@ -43,6 +44,7 @@ class TravelDtoRequest {
     owner?: string;
     ratingId?: Types.ObjectId;
     chatId?: Types.ObjectId;
+    imageTravel?: any;
   }) {
     this.id = id;
     this.name = name;
@@ -57,8 +59,8 @@ class TravelDtoRequest {
     this.owner = owner;
     this.ratingId = ratingId;
     this.chatId = chatId;
+    this.imageTravel = imageTravel;
   }
 }
-
 
 export default TravelDtoRequest;
