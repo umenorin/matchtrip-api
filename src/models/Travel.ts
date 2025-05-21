@@ -63,10 +63,14 @@ export const TravelSchema: Schema = new Schema(
       ref: "User",
       required: true,
     },
+    profileImage: {
+      type: String,
+      allowNull: true,
+    },
   },
   {
     timestamps: true, // Adiciona `createdAt` e `updatedAt` automaticamente
-  }
+  },
 );
 
 export const Travel = mongoose.model("Travel", TravelSchema);

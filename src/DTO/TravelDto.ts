@@ -14,7 +14,7 @@ class TravelDtoRequest {
   limitTravelers?: number;
   ratingId?: Types.ObjectId;
   chatId?: Types.ObjectId;
-
+  imageTravel: any;
   constructor({
     id,
     name,
@@ -29,6 +29,7 @@ class TravelDtoRequest {
     limitTravelers,
     ratingId,
     chatId,
+    imageTravel,
   }: {
     id?: string;
     name: string;
@@ -43,6 +44,7 @@ class TravelDtoRequest {
     owner?: string;
     ratingId?: Types.ObjectId;
     chatId?: Types.ObjectId;
+    imageTravel?: any;
   }) {
     this.id = id;
     this.name = name;
@@ -57,6 +59,7 @@ class TravelDtoRequest {
     this.owner = owner;
     this.ratingId = ratingId;
     this.chatId = chatId;
+    this.imageTravel = imageTravel;
   }
 }
 
@@ -87,10 +90,10 @@ class TravelDtoResponse {
     id: Types.ObjectId;
     messageCount?: number;
   };
-  travalers:string[];
+  travalers: string[];
   createdAt: Date;
   updatedAt: Date;
-
+  imageTravel?: any;
   constructor({
     id,
     name,
@@ -108,12 +111,13 @@ class TravelDtoResponse {
     createdAt,
     updatedAt,
     travalers,
+    imageTravel,
   }: {
     id: string;
     name: string;
     owner: {
       id: Types.ObjectId;
-      name:string
+      name: string;
     };
     description: string;
     country: string;
@@ -135,9 +139,10 @@ class TravelDtoResponse {
       id: Types.ObjectId;
       messageCount?: number;
     };
-    travalers:string[];
+    travalers: string[];
     createdAt: Date;
     updatedAt: Date;
+    imageTravel?: any;
   }) {
     this.owner = owner;
     this.id = id;
@@ -155,6 +160,7 @@ class TravelDtoResponse {
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.travalers = travalers;
+    this.imageTravel = imageTravel;
   }
 }
 export { TravelDtoRequest, TravelDtoResponse };

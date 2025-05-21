@@ -2,15 +2,16 @@ import { Router } from "express";
 import UserController from "../controllers/UserController.js";
 import { userValidator } from "../middleware/UserValidator.js";
 import { container } from "tsyringe";
-import { uploadAvatar } from "../multerConfig.js";
+import { configureUpload } from "../multerConfig.js";
 
 const userRouter = Router();
 
 const userControllerInstance = container.resolve(UserController);
+const uploadUserAvatar = configureUpload("users");
 
 userRouter.post(
   "/singup",
-  uploadAvatar.single('profileImage'),
+  uploadUserAvatar.single('profileImage'),
   userValidator,
   userControllerInstance.postUser.bind(userControllerInstance)
 );
