@@ -24,7 +24,7 @@ class UserRepository implements IUserRepository {
     return false;
   }
 
-  async register(user: UserDtoRequest): Promise<void> {
+  async register(user: UserDtoRequest): Promise<UserDtoResponse> {
     const hash = process.env.HASH_SALT_BCRYPT
       ? Number(process.env.HASH_SALT_BCRYPT)
       : 10;
@@ -41,8 +41,18 @@ class UserRepository implements IUserRepository {
       gender: user.gender,
       profileImage: `/uploads/users/${user.profileImage}`,
     });
-
-    return newUser;
+    const userDtoResponse: any = new UserDtoResponse({
+      id: newUser._id,
+      name: newUser.name as string,
+      email: newUser.email as string,
+      numberPhone: newUser.numberPhone as string,
+      uniqueIdentification: newUser.uniqueIdentification as string,
+      age: newUser.age as number,
+      nationality: newUser.nationality as string,
+      gender: newUser.gender as string,
+      profileImage: newUser.profileImage,
+    });
+    return userDtoResponse;
   }
 
   async getById(id: string): Promise<UserDtoResponse | null> {
@@ -97,7 +107,7 @@ class UserRepository implements IUserRepository {
       age: updatedUser.age as number,
       nationality: updatedUser.nationality as string,
       gender: updatedUser.gender as string,
-      profileImage: updatedUser.profileImage
+      profileImage: updatedUser.profileImage,
     };
   }
 

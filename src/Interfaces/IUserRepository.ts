@@ -9,7 +9,7 @@ interface IUserRepository {
   //This method will return a user by your Unique Identificator
   getByUniqueIdentificator(uniqueIdentificator: string): UserDto;
   //this method will create a new user and set in database and when the create has sucessfuly this method return the user ID
-  register(user: UserDto): void;
+  register(user: UserDto): Promise<UserDtoResponse>;
   update(id: string, user:UserDto) : Promise<UserDtoResponse | null>;
   delete(id: string): void;
   

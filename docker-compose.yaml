@@ -9,7 +9,7 @@ services:
     environment:
       - NODE_ENV=production
       - DATABASE_URL=mongodb://mongo_db:27017/matchtrip  # Conexão pro MongoDB
-      # - CLIENT_URL=CLIENT_URL # CORS client
+      - CLIENT_URL=http://localhost:5173 #CORS client
     depends_on:
       - mongo_db
     networks:
