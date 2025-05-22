@@ -42,7 +42,7 @@ class UserRepository implements IUserRepository {
       profileImage: `/uploads/users/${user.profileImage}`,
     });
     const userDtoResponse: any = new UserDtoResponse({
-      id: newUser._id,
+      id: newUser._id as string,
       name: newUser.name as string,
       email: newUser.email as string,
       numberPhone: newUser.numberPhone as string,
