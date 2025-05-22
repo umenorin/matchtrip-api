@@ -39,7 +39,7 @@ class UserRepository implements IUserRepository {
       uniqueIdentification: user.uniqueIdentification,
       nationality: user.nationality,
       gender: user.gender,
-      profileImage: `/uploads/avatars/${user.profileImage}`,
+      profileImage: `/uploads/users/${user.profileImage}`,
     });
 
     return newUser;

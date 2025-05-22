@@ -27,7 +27,7 @@ export default class UserController {
       const newUser = await this._userService.createUser(userDto);
       res.status(200).json({
         message: "sucessful",
-        body: newUser,
+        token: newUser,
       });
     } catch (error: any) {
       if (error instanceof CustomError) {
