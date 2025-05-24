@@ -6,6 +6,8 @@ import UserDtoRequest from "../DTO/UserDtoRequest.js";
 import UserDtoResponse from "../DTO/UserDtoResponse.js";
 import { injectable } from "tsyringe";
 import { Types } from "mongoose";
+import { Category } from "../models/Categorie.js";
+import { UserCategory } from "../models/UserCategory.js";
 
 @injectable()
 class UserRepository implements IUserRepository {
@@ -29,7 +31,9 @@ class UserRepository implements IUserRepository {
       ? Number(process.env.HASH_SALT_BCRYPT)
       : 10;
     const hashPassword = await bcrypt.hash(user.password, hash);
-    console.log("hashPassword: ", hashPassword);
+    
+
+
     const newUser = await User.create({
       name: user.name,
       password: hashPassword,
@@ -51,13 +55,16 @@ class UserRepository implements IUserRepository {
       nationality: newUser.nationality as string,
       gender: newUser.gender as string,
       profileImage: newUser.profileImage,
+      categories: [],
+      travels: []
     });
     return userDtoResponse;
   }
 
   async getById(id: string): Promise<UserDtoResponse | null> {
     const user = await User.findOne({ _id: id }).exec();
-
+    const categoriesId = await UserCategory.find({userId: id})
+    console.log("categories ID: ",categoriesId)
     if (user) {
       const userDtoResponse: UserDtoResponse = {
         id: id,

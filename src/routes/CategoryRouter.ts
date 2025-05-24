@@ -10,4 +10,7 @@ categoryRouter.post("/create", categoryControllerInstance.createCategory.bind(ca
 categoryRouter.get("/", categoryControllerInstance.getAllCategories.bind(categoryControllerInstance));
 categoryRouter.get("/:id", categoryControllerInstance.getCategoryById.bind(categoryControllerInstance));
 
+categoryRouter.post("/sendForTravel/:id", categoryControllerInstance.sendCategoryForTravel.bind(categoryControllerInstance));
+categoryRouter.post("/sendForUser/:id", categoryControllerInstance.sendCategoryForUser.bind(categoryControllerInstance));
+
 export default categoryRouter;

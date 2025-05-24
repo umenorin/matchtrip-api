@@ -1,4 +1,5 @@
 import { Types } from "mongoose";
+import  CategoryDto  from "./CategoryDto.js";
 
 export default class TravelDtoResponse {
   id: string;
@@ -31,6 +32,7 @@ export default class TravelDtoResponse {
   createdAt: Date;
   updatedAt: Date;
   imageTravel?: any;
+  categories?: CategoryDto[];
   constructor({
     id,
     name,
@@ -49,6 +51,7 @@ export default class TravelDtoResponse {
     updatedAt,
     travalers,
     imageTravel,
+    categories,
   }: {
     id: string;
     name: string;
@@ -80,6 +83,8 @@ export default class TravelDtoResponse {
     createdAt: Date;
     updatedAt: Date;
     imageTravel?: any;
+
+    categories?: CategoryDto[];
   }) {
     this.owner = owner;
     this.id = id;
@@ -98,5 +103,6 @@ export default class TravelDtoResponse {
     this.updatedAt = updatedAt;
     this.travalers = travalers;
     this.imageTravel = imageTravel;
+    this.categories = categories;
   }
 }

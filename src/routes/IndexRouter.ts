@@ -50,6 +50,8 @@ router.get("/", (req: Request, res: Response) => {
           createCategory: "POST /category/create",
           getAllCategories: "GET /category",
           getCategoryById: "GET /category/:id",
+          sendForTravel: "POST /category/sendForTravel/:id",
+          sendForUser: "POST /category/sendforUser/:id",
         },
       },
       chats: {
@@ -72,9 +74,9 @@ router.get("/", (req: Request, res: Response) => {
 
 router.use("/users", userRouter);
 router.use("/travel", travelRouter);
-router.use("/message",messageRouter)
+router.use("/message", messageRouter);
 router.use("/rating", ratingRouter);
-router.use("/category",categoryRouter)
+router.use("/category", categoryRouter);
 router.use("/chat", chatRouter);
 router.use("/match", matchRouter);
 export default router;

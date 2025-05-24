@@ -1,15 +1,10 @@
-// src/DTO/CategorieDto.ts
-export class CategoryDto {
-  name!: string;
-
-  constructor(data: Partial<CategoryDto>) {
-    Object.assign(this, data);
+class CategoryDto {
+  id?: string;
+  name: string;
+  constructor({ id, name }: { id?: string; name: string }) {
+    this.id = id;
+    this.name = name;
   }
 }
 
-export class CategoryResponseDto {
-  constructor(
-    public readonly id: string,
-    public readonly name: string
-  ) {}
-}
+export default CategoryDto;
