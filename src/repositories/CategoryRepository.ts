@@ -1,5 +1,5 @@
 import { ICategoryRepository } from "../Interfaces/ICategoryRepository.js";
-import  CategoryDto from "../DTO/CategoryDto.js";
+import CategoryDto from "../DTO/CategoryDto.js";
 import { Category } from "../models/Categorie.js";
 import { injectable } from "tsyringe";
 import { CustomError } from "../errors/CustomError.js";
@@ -18,6 +18,13 @@ export class CategoryRepository implements ICategoryRepository {
     userId: string,
   ): Promise<UserDtoResponse | null> {
     try {
+      const relationExists = await UserCategory.exists({
+        userId: userId,
+        categoryId: categoryId,
+      });
+      if (!!relationExists) {
+        throw new CustomError("You already have this category", 400);
+      }
       const categoriesDto: CategoryDto[] = [];
       await UserCategory.create({
         userId: userId,
@@ -28,7 +35,7 @@ export class CategoryRepository implements ICategoryRepository {
         .populate("categoryId")
         .exec();
 
-      categoriesId.forEach((category:any) => {
+      categoriesId.forEach((category: any) => {
         console.log(category.categoryId);
         categoriesDto.push(
           new CategoryDto({
@@ -60,6 +67,13 @@ export class CategoryRepository implements ICategoryRepository {
     travelId: string,
   ): Promise<TravelDtoResponse | null> {
     try {
+      const relationExists = await TravelCategory.exists({
+       travelId: travelId,
+        categoryId: categoryId,
+      });
+      if (!!relationExists) {
+        throw new CustomError("You already have this category", 400);
+      }
       const categoriesDto: CategoryDto[] = [];
       await TravelCategory.create({
         travelId: travelId,
@@ -76,7 +90,7 @@ export class CategoryRepository implements ICategoryRepository {
         path: "traveler",
         select: "-password", // Isso exclui o campo 'password' do resultado
       });
-      categoriesId.forEach((category:any): any => {
+      categoriesId.forEach((category: any): any => {
         console.log(category.categoryId);
         categoriesDto.push(
           new CategoryDto({
@@ -124,14 +138,14 @@ export class CategoryRepository implements ICategoryRepository {
 
   async create(category: CategoryDto): Promise<CategoryDto> {
     try {
-      const newCategory:any = await Category.create({ name: category.name });
+      const newCategory: any = await Category.create({ name: category.name });
       if (!newCategory) {
         throw new CustomError("Category can't be create", 400);
       }
-      return new CategoryDto(
-        {id: newCategory.id.toString(),
-        name: newCategory.name}
-      );
+      return new CategoryDto({
+        id: newCategory.id.toString(),
+        name: newCategory.name,
+      });
     } catch (error: any) {
       throw new CustomError(error, 400);
     }
@@ -140,14 +154,14 @@ export class CategoryRepository implements ICategoryRepository {
   async findAll(): Promise<CategoryDto[]> {
     const categories = await Category.find();
     return categories.map(
-      (cat) => new CategoryDto({id:cat.id.toString(), name:cat.name}),
+      (cat) => new CategoryDto({ id: cat.id.toString(), name: cat.name }),
     );
   }
 
   async findById(id: string): Promise<CategoryDto | null> {
     const category = await Category.findById(id);
     return category
-      ? new CategoryDto({id:category.id.toString(), name:category.name})
+      ? new CategoryDto({ id: category.id.toString(), name: category.name })
       : null;
   }
 
@@ -159,7 +173,7 @@ export class CategoryRepository implements ICategoryRepository {
       new: true,
     });
     return updated
-      ? new CategoryDto({id: updated.id.toString(), name: updated.name})
+      ? new CategoryDto({ id: updated.id.toString(), name: updated.name })
       : null;
   }
 
