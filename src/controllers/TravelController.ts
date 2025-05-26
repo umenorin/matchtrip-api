@@ -27,13 +27,12 @@ export default class TravelController {
       const travelDto = new TravelDtoRequest({
         name: travel.name,
         description: travel.description,
-        latitude: travel.latitude,
-        longitude: travel.longitude,
+     
         city: travel.city,
         country: travel.country,
         startDate: travel.startDate,
         endDate: travel.endDate,
-        limitTravelers: travel.travelLimit,
+        limitTravelers: travel.limitTravelers,
         owner: travel.owner,
         imageTravel: travel.imageTravel,
       });
@@ -55,13 +54,11 @@ export default class TravelController {
     const travelDto = new TravelDtoRequest({
       name: travel.name,
       description: travel.description,
-      latitude: travel.latitude,
-      longitude: travel.longitude,
       city: travel.city,
       country: travel.country,
       startDate: travel.startDate,
       endDate: travel.endDate,
-      limitTravelers: travel.travelLimit,
+      limitTravelers: travel.limitTravelers,
     });
 
     try {

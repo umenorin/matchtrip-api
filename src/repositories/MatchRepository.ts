@@ -7,6 +7,7 @@ import { User } from "../models/User.js";
 import { Match } from "../models/Match.js";
 import MatchStatusEnum from "../Enums/MatchStatusEnum.js";
 import { GroupTravalers } from "../models/GroupTravalers.js";
+import { UserTravel } from "../models/UserTravel.js";
 
 @injectable()
 export class MatchRepository implements IMatchRepository {
@@ -24,7 +25,7 @@ export class MatchRepository implements IMatchRepository {
           traveler: match.traveler,
           travel: match.travel,
           status: match.status,
-        })
+        }),
       );
     });
 
@@ -44,7 +45,7 @@ export class MatchRepository implements IMatchRepository {
           traveler: match.traveler,
           travel: match.travel,
           status: match.status,
-        })
+        }),
       );
     });
 
@@ -53,7 +54,7 @@ export class MatchRepository implements IMatchRepository {
 
   async createProbablyMatch(
     userId: string,
-    travelId: string
+    travelId: string,
   ): Promise<MatchDto | null> {
     const travel = await Travel.findById(travelId).exec();
     const user = await User.findById(userId).exec();
@@ -86,7 +87,8 @@ export class MatchRepository implements IMatchRepository {
     if (!match) throw new CustomError("Match don't found", 400);
     if (user._id.toString() !== match.travel.owner.toString())
       throw new CustomError("You aren't the owner for recuse this match", 401);
-    if (match.status == MatchStatusEnum.REJECTED) throw new CustomError("This match has already recused",400)
+    if (match.status == MatchStatusEnum.REJECTED)
+      throw new CustomError("This match has already recused", 400);
 
     match.status = MatchStatusEnum.REJECTED;
     match.updatedAt = new Date();
@@ -102,17 +104,24 @@ export class MatchRepository implements IMatchRepository {
   async acceptMatch(userId: string, matchId: string): Promise<MatchDto> {
     const user: any = await User.findById(userId);
     const match: any = await Match.findById(matchId).populate("travel");
-
+    console.log();
     if (!user) throw new CustomError("User not found", 400);
     if (!match) throw new CustomError("Match don't found", 400);
     if (user._id.toString() !== match.travel.owner.toString())
       throw new CustomError("You aren't the owner for recuse this match", 401);
-    if (match.status == MatchStatusEnum.REJECTED) throw new CustomError("This match has already recused",400)
-      
+    if (match.status == MatchStatusEnum.REJECTED)
+      throw new CustomError("This match has already recused", 400);
+    const travelers = await GroupTravalers.countDocuments({
+      travel: match.travel,
+    });
+    console.log("Traveler in Travel: ", travelers);
+    if (travelers >= match.travel.limitTravelers)
+      throw new CustomError("Your group don't have more space", 400);
+
     match.status = MatchStatusEnum.ACCEPTED;
     match.updatedAt = new Date();
     const matchAccept = await match.save();
-    await GroupTravalers.create({ traveler: user, travel: match.travel });
+    await GroupTravalers.create({ traveler: match.traveler, travel: match.travel });
 
     return new MatchDto({
       id: matchAccept._id,

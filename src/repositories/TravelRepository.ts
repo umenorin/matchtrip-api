@@ -39,7 +39,7 @@ export class TravelRepository implements ITravelRepository {
         endDate: travelDto.endDate,
 
         // Group-related fields (moved from GroupTravel)
-        travelLimit: travelDto.limitTravelers, // Previously maxMembers in GroupTravel
+        limitTravelers: travelDto.limitTravelers, // Previously maxMembers in GroupTravel
 
         // Relationships
         rating: newRating._id,
