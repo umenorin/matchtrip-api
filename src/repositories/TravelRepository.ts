@@ -1,5 +1,5 @@
 import { injectable } from "tsyringe";
-import TravelDtoRequest  from "../DTO/TravelDtoRequest.js";
+import TravelDtoRequest from "../DTO/TravelDtoRequest.js";
 import ITravelRepository from "../Interfaces/ITravelRepository.js";
 import { Rating } from "../models/Rating.js";
 import { Travel } from "../models/Travel.js";
@@ -8,6 +8,7 @@ import { Chat } from "../models/Chat.js";
 import { User } from "../models/User.js";
 import { GroupTravalers } from "../models/GroupTravalers.js";
 import TravelDtoResponse from "../DTO/TravelDtoResponse.js";
+import TravelStatusEnum from "../Enums/TravelStatusEnum.js";
 
 @injectable()
 export class TravelRepository implements ITravelRepository {
@@ -30,9 +31,8 @@ export class TravelRepository implements ITravelRepository {
         // Location data
         country: travelDto.country,
         city: travelDto.city,
-        latitude: travelDto.latitude,
-        longitude: travelDto.longitude,
         imageTravel: travelDto.imageTravel,
+        status: TravelStatusEnum.ONGOIN,
 
         // Dates (original Travel fields)
         startDate: travelDto.startDate,
@@ -68,8 +68,6 @@ export class TravelRepository implements ITravelRepository {
         { _id: travel.id },
         {
           name: travel.name,
-          latitude: travel.latitude,
-          longitude: travel.longitude,
           city: travel.city,
           country: travel.country,
           imageTravel: travel.imageTravel,
@@ -113,12 +111,11 @@ export class TravelRepository implements ITravelRepository {
         description: travel.description,
         country: travel.country,
         city: travel.city,
-        latitude: travel.latitude,
-        longitude: travel.longitude,
         startDate: travel.startDate,
         endDate: travel.endDate,
         limitTravelers: travel.limitTravelers,
         imageTravel: travel.imageTravel,
+        status: travel.status,
         rating: {
           id: travel.rating._id,
           averageScore: travel.rating.averageRating, // Assuming this exists
@@ -185,10 +182,9 @@ export class TravelRepository implements ITravelRepository {
               description: travel.description,
               country: travel.country,
               city: travel.city,
-              latitude: travel.latitude,
-              longitude: travel.longitude,
               startDate: travel.startDate,
               endDate: travel.endDate,
+              status: travel.status,
               imageTravel: travel.imageTravel,
               limitTravelers: travel.limitTravelers,
               rating: {

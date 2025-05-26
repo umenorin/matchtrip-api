@@ -6,6 +6,8 @@ import IUserRepository from "../Interfaces/IUserRepository.js";
 import { CustomError } from "../errors/CustomError.js";
 import { inject, injectable } from "tsyringe";
 import bcrypt from "bcryptjs";
+import { UserCategory } from "../models/UserCategory.js";
+import CategoryDto from "../DTO/CategoryDto.js";
 
 @injectable()
 class UserService implements IUserService {
@@ -50,6 +52,18 @@ class UserService implements IUserService {
       if (!isPasswordValid) {
         throw new CustomError("Credenciais inválidas senha", 400);
       }
+      const categoriesDto: CategoryDto[] = [];
+      const categories: any = await UserCategory.find({ userId: _user._id }).populate('categoryId');
+      console.log(categories)
+      categories.forEach((category: any) => {
+        console.log(category.categoryId);
+        categoriesDto.push(
+          new CategoryDto({
+            id: category.categoryId._id,
+            name: category.categoryId.name,
+          }),
+        );
+      });
 
       return new UserDtoResponse({
         id: _user.id as string,
@@ -61,6 +75,7 @@ class UserService implements IUserService {
         nationality: _user.nationality as string,
         gender: _user.gender as string,
         profileImage: _user.profileImage,
+        categories: categoriesDto,
       });
     } catch (error: any) {
       throw new CustomError(error.message, 401);

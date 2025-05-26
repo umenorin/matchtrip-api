@@ -6,8 +6,6 @@ class TravelDtoRequest {
   description: string;
   country: string;
   city: string;
-  latitude?: number;
-  longitude?: number;
   startDate?: Date;
   endDate?: Date;
   owner?: string;
@@ -22,8 +20,6 @@ class TravelDtoRequest {
     owner,
     country,
     city,
-    latitude,
-    longitude,
     startDate,
     endDate,
     limitTravelers,
@@ -36,8 +32,6 @@ class TravelDtoRequest {
     description: string;
     country: string;
     city: string;
-    latitude?: number;
-    longitude?: number;
     startDate?: Date;
     endDate?: Date;
     limitTravelers?: number;
@@ -51,8 +45,6 @@ class TravelDtoRequest {
     this.description = description;
     this.country = country;
     this.city = city;
-    this.latitude = latitude;
-    this.longitude = longitude;
     this.startDate = startDate;
     this.endDate = endDate;
     this.limitTravelers = limitTravelers;

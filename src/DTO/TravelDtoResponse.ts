@@ -1,5 +1,6 @@
 import { Types } from "mongoose";
-import  CategoryDto  from "./CategoryDto.js";
+import CategoryDto from "./CategoryDto.js";
+import TravelStatusEnum from "../Enums/TravelStatusEnum.js";
 
 export default class TravelDtoResponse {
   id: string;
@@ -11,8 +12,7 @@ export default class TravelDtoResponse {
   };
   country: string;
   city: string;
-  latitude?: number;
-  longitude?: number;
+  status: TravelStatusEnum;
   startDate?: Date;
   endDate?: Date;
   limitTravelers?: number;
@@ -40,8 +40,7 @@ export default class TravelDtoResponse {
     description,
     country,
     city,
-    latitude,
-    longitude,
+    status,
     startDate,
     endDate,
     limitTravelers,
@@ -62,8 +61,7 @@ export default class TravelDtoResponse {
     description: string;
     country: string;
     city: string;
-    latitude?: number;
-    longitude?: number;
+    status: TravelStatusEnum;
     startDate?: Date;
     endDate?: Date;
     limitTravelers?: number;
@@ -89,11 +87,10 @@ export default class TravelDtoResponse {
     this.owner = owner;
     this.id = id;
     this.name = name;
+    this.status = status;
     this.description = description;
     this.country = country;
     this.city = city;
-    this.latitude = latitude;
-    this.longitude = longitude;
     this.startDate = startDate;
     this.endDate = endDate;
     this.limitTravelers = limitTravelers;

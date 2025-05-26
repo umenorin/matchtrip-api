@@ -4,6 +4,7 @@ import { Schema } from "mongoose";
 import { Rating } from "./Rating.js";
 import { Chat } from "./Chat.js";
 import { User } from "./User.js";
+import TravelStatusEnum from "../Enums/TravelStatusEnum.js";
 
 export const TravelSchema: Schema = new Schema(
   {
@@ -28,14 +29,7 @@ export const TravelSchema: Schema = new Schema(
       required: true,
       maxlength: 255,
     },
-    latitude: {
-      type: Number,
-      required: false,
-    },
-    longitude: {
-      type: Number,
-      required: false,
-    },
+   
 
     startDate: {
       type: Date,
@@ -46,6 +40,12 @@ export const TravelSchema: Schema = new Schema(
 
     limitTravelers: {
       type: Number,
+    },
+    status: {
+      type: String,
+      enum: Object.values(TravelStatusEnum),
+      default: TravelStatusEnum.ONGOIN,
+      required: true,
     },
 
     rating: {
@@ -63,7 +63,7 @@ export const TravelSchema: Schema = new Schema(
       ref: "User",
       required: true,
     },
-    profileImage: {
+    imageTravel: {
       type: String,
       allowNull: true,
     },
