@@ -53,8 +53,10 @@ class UserService implements IUserService {
         throw new CustomError("Credenciais inválidas senha", 400);
       }
       const categoriesDto: CategoryDto[] = [];
-      const categories: any = await UserCategory.find({ userId: _user._id }).populate('categoryId');
-      console.log(categories)
+      const categories: any = await UserCategory.find({
+        userId: _user._id,
+      }).populate("categoryId");
+      console.log(categories);
       categories.forEach((category: any) => {
         console.log(category.categoryId);
         categoriesDto.push(
@@ -108,6 +110,20 @@ class UserService implements IUserService {
 
     const updatedUser = await this._userRepository.update(id, userData);
     if (!updatedUser) throw new CustomError("Internal Server Error", 500);
+    const categoriesDto: CategoryDto[] = [];
+    const categories: any = await UserCategory.find({
+      userId: _user._id,
+    }).populate("categoryId");
+    console.log(categories);
+    categories.forEach((category: any) => {
+      console.log(category.categoryId);
+      categoriesDto.push(
+        new CategoryDto({
+          id: category.categoryId._id,
+          name: category.categoryId.name,
+        }),
+      );
+    });
 
     return new UserDtoResponse({
       id: updatedUser.id,
@@ -119,6 +135,7 @@ class UserService implements IUserService {
       nationality: updatedUser.nationality,
       gender: updatedUser.gender,
       profileImage: updatedUser.profileImage,
+      categories: categoriesDto,
     });
   }
 
@@ -129,6 +146,20 @@ class UserService implements IUserService {
     if (!user) {
       throw new Error("Credenciais inválidas user");
     }
+    const categoriesDto: CategoryDto[] = [];
+    const categories: any = await UserCategory.find({
+      userId: _user._id,
+    }).populate("categoryId");
+    console.log(categories);
+    categories.forEach((category: any) => {
+      console.log(category.categoryId);
+      categoriesDto.push(
+        new CategoryDto({
+          id: category.categoryId._id,
+          name: category.categoryId.name,
+        }),
+      );
+    });
 
     return new UserDtoResponse({
       id: _user._id as string,
@@ -140,6 +171,7 @@ class UserService implements IUserService {
       nationality: _user.nationality as string,
       gender: _user.gender as string,
       profileImage: _user.profileImage,
+      categories: categoriesDto,
     });
   }
 }
