@@ -29,6 +29,5 @@ export function configureUpload(folderName: string) {
       cb(null, fileName);
     },
   });
-
   return multer({ storage });
 }

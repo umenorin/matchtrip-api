@@ -22,19 +22,18 @@ export default class TravelController {
         typeof req.body.travel === "string"
           ? JSON.parse(req.body.travel)
           : req.body.travel;
-      console.log("travel: ", travel);
-
+      console.log(req.file);
       const travelDto = new TravelDtoRequest({
         name: travel.name,
         description: travel.description,
-     
+
         city: travel.city,
         country: travel.country,
         startDate: travel.startDate,
         endDate: travel.endDate,
         limitTravelers: travel.limitTravelers,
         owner: travel.owner,
-        imageTravel: travel.imageTravel,
+        imageTravel: req.file ? req.file.filename : null,
       });
 
       await this._travelService.createTravel(travelDto);

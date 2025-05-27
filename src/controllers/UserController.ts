@@ -63,7 +63,7 @@ export default class UserController {
   public async getUser(req: Request, res: Response) {
     try {
       const user = req.params.id;
-      console.log(user)
+      console.log(user);
       const userResponse = await this._userService.getUser(user);
       res.status(200).json({
         message: "Success!",
