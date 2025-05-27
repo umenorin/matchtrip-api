@@ -108,11 +108,11 @@ class UserService implements IUserService {
       userData.password = bcrypt.hashSync(userData.password, 10);
     }
 
-    const updatedUser = await this._userRepository.update(id, userData);
+    const updatedUser:any = await this._userRepository.update(id, userData);
     if (!updatedUser) throw new CustomError("Internal Server Error", 500);
     const categoriesDto: CategoryDto[] = [];
     const categories: any = await UserCategory.find({
-      userId: _user._id,
+      userId: updatedUser._id,
     }).populate("categoryId");
     console.log(categories);
     categories.forEach((category: any) => {
