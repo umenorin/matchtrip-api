@@ -8,6 +8,8 @@ import { inject, injectable } from "tsyringe";
 import bcrypt from "bcryptjs";
 import { UserCategory } from "../models/UserCategory.js";
 import CategoryDto from "../DTO/CategoryDto.js";
+import { GroupTravalers } from "../models/GroupTravalers.js";
+import TravelDtoResponse from "../DTO/TravelDtoResponse.js";
 
 @injectable()
 class UserService implements IUserService {
@@ -66,7 +68,14 @@ class UserService implements IUserService {
           }),
         );
       });
+      const groupTravels = await GroupTravalers.find({
+        traveler: _user._id,
+      }).populate("travel");
+      const travels: TravelDtoResponse[] = [];
 
+      groupTravels.forEach((groupTravel: any) => {
+        travels.push(groupTravel.travel);
+      });
       return new UserDtoResponse({
         id: _user.id as string,
         email: _user.email as string,
@@ -78,6 +87,7 @@ class UserService implements IUserService {
         gender: _user.gender as string,
         profileImage: _user.profileImage,
         categories: categoriesDto,
+        travels: travels
       });
     } catch (error: any) {
       throw new CustomError(error.message, 401);
@@ -109,6 +119,7 @@ class UserService implements IUserService {
     }
 
     const updatedUser:any = await this._userRepository.update(id, userData);
+
     if (!updatedUser) throw new CustomError("Internal Server Error", 500);
     const categoriesDto: CategoryDto[] = [];
     const categories: any = await UserCategory.find({
@@ -140,39 +151,54 @@ class UserService implements IUserService {
   }
 
   async getUser(user: string): Promise<UserDtoResponse> {
-    const _user: any = await User.findById(user);
-    console.log(user);
+    try {
+      const _user: any = await User.findById(user);
 
-    if (!user) {
-      throw new Error("Credenciais inválidas user");
+      if (!user) {
+        throw new Error("Credenciais inválidas user");
+      }
+
+      const groupTravels = await GroupTravalers.find({
+        traveler: _user._id,
+      }).populate("travel");
+      const travels: TravelDtoResponse[] = [];
+
+      groupTravels.forEach((groupTravel: any) => {
+        travels.push(groupTravel.travel);
+      });
+
+      const categoriesDto: CategoryDto[] = [];
+      const categories: any = await UserCategory.find({
+        userId: _user._id,
+      }).populate("categoryId");
+      console.log(categories);
+      categories.forEach((category: any) => {
+        console.log(category.categoryId);
+        categoriesDto.push(
+          new CategoryDto({
+            id: category.categoryId._id,
+            name: category.categoryId.name,
+          }),
+        );
+      });
+
+      return new UserDtoResponse({
+        id: _user._id as string,
+        email: _user.email as string,
+        name: _user.name as string,
+        numberPhone: _user.numberPhone as string,
+        uniqueIdentification: _user.uniqueIdentification as string,
+        age: _user.age as number,
+        nationality: _user.nationality as string,
+        gender: _user.gender as string,
+        profileImage: _user.profileImage,
+        categories: categoriesDto,
+        travels: travels,
+      });
+    }catch(error:any) {
+      throw new CustomError(error.message, 400)
     }
-    const categoriesDto: CategoryDto[] = [];
-    const categories: any = await UserCategory.find({
-      userId: _user._id,
-    }).populate("categoryId");
-    console.log(categories);
-    categories.forEach((category: any) => {
-      console.log(category.categoryId);
-      categoriesDto.push(
-        new CategoryDto({
-          id: category.categoryId._id,
-          name: category.categoryId.name,
-        }),
-      );
-    });
 
-    return new UserDtoResponse({
-      id: _user._id as string,
-      email: _user.email as string,
-      name: _user.name as string,
-      numberPhone: _user.numberPhone as string,
-      uniqueIdentification: _user.uniqueIdentification as string,
-      age: _user.age as number,
-      nationality: _user.nationality as string,
-      gender: _user.gender as string,
-      profileImage: _user.profileImage,
-      categories: categoriesDto,
-    });
   }
 }
 

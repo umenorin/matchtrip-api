@@ -16,7 +16,7 @@ export default class TravelDtoResponse {
   startDate?: Date;
   endDate?: Date;
   limitTravelers?: number;
-  rating: {
+  rating?: {
     id: Types.ObjectId;
     averageScore?: number;
     userRatings?: Array<{
@@ -28,9 +28,9 @@ export default class TravelDtoResponse {
     id: Types.ObjectId;
     messageCount?: number;
   };
-  travalers: string[];
-  createdAt: Date;
-  updatedAt: Date;
+  travalers?: string[];
+  createdAt?: Date;
+  updatedAt?: Date;
   imageTravel?: any;
   categories?: CategoryDto[];
   constructor({
@@ -65,7 +65,7 @@ export default class TravelDtoResponse {
     startDate?: Date;
     endDate?: Date;
     limitTravelers?: number;
-    rating: {
+    rating?: {
       id: Types.ObjectId;
       averageScore?: number;
       userRatings?: Array<{
@@ -77,9 +77,9 @@ export default class TravelDtoResponse {
       id: Types.ObjectId;
       messageCount?: number;
     };
-    travalers: string[];
-    createdAt: Date;
-    updatedAt: Date;
+    travalers?: string[];
+    createdAt?: Date;
+    updatedAt?: Date;
     imageTravel?: any;
 
     categories?: CategoryDto[];

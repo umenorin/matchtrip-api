@@ -9,6 +9,7 @@ import { User } from "../models/User.js";
 import { GroupTravalers } from "../models/GroupTravalers.js";
 import TravelDtoResponse from "../DTO/TravelDtoResponse.js";
 import TravelStatusEnum from "../Enums/TravelStatusEnum.js";
+import { UserTravel } from "../models/UserTravel.js";
 
 @injectable()
 export class TravelRepository implements ITravelRepository {
@@ -23,7 +24,7 @@ export class TravelRepository implements ITravelRepository {
       }
       console.log("Travel dto :", travelDto);
       // 2. Depois cria o Travel com a referência
-      await Travel.create({
+     const travel = await Travel.create({
         // Basic info (original Travel fields)
         name: travelDto.name,
         description: travelDto.description,
@@ -46,6 +47,7 @@ export class TravelRepository implements ITravelRepository {
         chat: newChat._id,
         owner: user,
       });
+      await GroupTravalers.create({travel:travel,traveler:user})
     } catch (error) {
       console.error("Error creating travel:", error);
       throw new Error("Failed to create travel record");
